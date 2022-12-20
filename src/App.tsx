@@ -1,21 +1,22 @@
 import "./App.css";
 import { supabase } from "./supabaseClient";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { EventForm } from "./EventForm";
+import { IEvent } from "./types";
 
 function App() {
-  const [dayEvents, setDayEvents] = useState<any[]>([]);
+  const [dayEvents, setDayEvents] = useState<IEvent[]>([]);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleNewDate = (e: any) => {
+  const handleNewDate = (e: ChangeEvent<HTMLInputElement>) => {
     const [, newMonth, newDay] = e.target.value.split("-");
     fetchEvents(newMonth, newDay);
   };
 
   const fetchEvents = async (month: string, day: string) => {
     const { data: newDayEvents } = await supabase
-      .from("eventLibrary_test")
+      .from("eventLibrary")
       .select()
       // MM/YY/ format
       .like("date", `%${month}/${day}/%`);
@@ -41,9 +42,11 @@ function App() {
           <input type="date" onChange={handleNewDate} />
         </div>
       </div>
-      {dayEvents.map((dayEvent) => (
-        <EventForm dayEvent={dayEvent} key={dayEvent.id} />
-      ))}
+      <div style={{ width: "70%", margin: "auto" }}>
+        {dayEvents.map((dayEvent) => (
+          <EventForm dayEvent={dayEvent} key={dayEvent.id} />
+        ))}
+      </div>
     </div>
   );
 }
