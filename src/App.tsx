@@ -16,7 +16,7 @@ function App() {
 
   const fetchEvents = async (month: string, day: string) => {
     const { data: newDayEvents } = await supabase
-      .from("eventLibrary")
+      .from("eventLibrary_test")
       .select()
       // MM/YY/ format
       .like("date", `%${month}/${day}/%`);
