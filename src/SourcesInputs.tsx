@@ -38,25 +38,30 @@ export const SourcesInputs = ({
   };
 
   return (
-    <div style={styles.sourceInputsContainer}>
-      {newSources.map((source, index) => (
-        <div style={styles.inputRow} key={originalSources[index]}>
-          <TextField
-            style={styles.inputStyle}
-            error={isInputInvalid(index)}
-            label={`Source ${index + 1}`}
-            value={source}
-            onChange={(e) => handleNewSource(e.target.value, index)}
-          />
-          <DeleteIcon
-            style={styles.iconStyle}
-            onClick={() => handleDeleteSource(index)}
-          />
+    <div>
+      <h4>Sources</h4>
+      <div style={styles.sourceInputsContainer}>
+        {newSources.map((source, index) => (
+          <div
+            style={styles.inputRow}
+            key={`${originalSources[index]}-${index}`}
+          >
+            <TextField
+              style={styles.inputStyle}
+              error={isInputInvalid(index)}
+              label={`Source ${index + 1}`}
+              value={source}
+              onChange={(e) => handleNewSource(e.target.value, index)}
+            />
+            <DeleteIcon
+              style={styles.iconStyle}
+              onClick={() => handleDeleteSource(index)}
+            />
+          </div>
+        ))}
+        <div style={styles.inputRow}>
+          <AddIcon style={styles.iconStyle} onClick={handleAddSource} />
         </div>
-      ))}
-      <div style={styles.inputRow}>
-        <div style={styles.inputStyle} />
-        <AddIcon style={styles.iconStyle} onClick={handleAddSource} />
       </div>
     </div>
   );
