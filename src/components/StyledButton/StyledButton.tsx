@@ -4,7 +4,7 @@ import {
   primaryBlueDisabled,
   primaryBlueHover,
   secondaryTextColor,
-} from ".././globalStyles";
+} from "../../globalStyles";
 
 export const StyledButton = (props: ButtonProps) => {
   let sx = {

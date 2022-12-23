@@ -1,9 +1,9 @@
 import Typography from "@mui/material/Typography";
 import { ChangeEvent, useEffect, useState } from "react";
 import { EventForm } from "../EventForm/EventForm";
-import { StyledTextField } from "../StyledTextField";
-import { supabase } from "../supabaseClient";
-import { IEvent } from "../types";
+import { StyledTextField } from "../../StyledTextField";
+import { supabase } from "../../supabaseClient";
+import { IEvent } from "../../types";
 import * as styles from "./EventsByDate.styles";
 
 export const EventsByDate = () => {

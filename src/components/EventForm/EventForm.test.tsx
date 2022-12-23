@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { EventForm } from "./EventForm";
-import * as supabaseModule from "../supabaseClient";
+import * as supabaseModule from "../../supabaseClient";
 
 describe("EventForm", () => {
   const mockUpdate = jest.fn().mockImplementation(() => jest.fn());

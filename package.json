@@ -8,7 +8,6 @@
     "@mui/icons-material": "^5.11.0",
     "@mui/material": "^5.11.1",
     "@supabase/supabase-js": "^2.2.1",
-    "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.2",
@@ -26,7 +25,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "jest --config ./jest.config.ts --coverage",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -48,6 +47,10 @@
     ]
   },
   "devDependencies": {
-    "@types/uuid": "^9.0.0"
+    "@testing-library/jest-dom": "^5.16.5",
+    "@types/uuid": "^9.0.0",
+    "jest-environment-jsdom": "^29.3.1",
+    "ts-jest": "^29.0.3",
+    "ts-node": "^10.9.1"
   }
 }

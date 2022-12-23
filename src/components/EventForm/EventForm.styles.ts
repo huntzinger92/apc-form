@@ -1,4 +1,4 @@
-import { primaryTextColor, secondaryBlue } from "../globalStyles";
+import { primaryTextColor, secondaryBlue } from "../../globalStyles";
 
 export const formContainer = {
   display: "flex",

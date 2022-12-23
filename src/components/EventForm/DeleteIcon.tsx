@@ -1,7 +1,7 @@
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { StyledButton } from "../StyledButton/StyledButton";
-import { supabase } from "../supabaseClient";
+import { supabase } from "../../supabaseClient";
 import * as styles from "./EventForm.styles";
 
 export interface IDeleteIcon {
