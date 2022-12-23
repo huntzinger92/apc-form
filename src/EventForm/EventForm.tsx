@@ -1,4 +1,3 @@
-import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Typography from "@mui/material/Typography";
@@ -9,13 +8,20 @@ import { ChangeEvent, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { v4 as uuidv4 } from "uuid";
-import { stringToSlug } from "./stringToSlug";
-import { supabase } from "./supabaseClient";
-import { IEvent } from "./types";
+import { stringToSlug } from "../stringToSlug";
+import { supabase } from "../supabaseClient";
+import { IEvent } from "../types";
 import * as styles from "./EventForm.styles";
-import { SourcesInputs } from "./SourcesInputs";
-import { StyledTextField } from "./StyledTextField";
-import { primaryTextColor } from "./globalStyles";
+import { SourcesInputs } from "../SourcesInputs";
+import { StyledTextField } from "../StyledTextField";
+import { primaryTextColor } from "../globalStyles";
+import { StyledButton } from "../StyledButton/StyledButton";
+import { DeleteButton } from "./DeleteIcon";
+import {
+  getDefaultDate,
+  rawDbSourcesToArray,
+  sourcesArrayToDbString,
+} from "./EventForm.utils";
 
 // cleanup - create separate components/utils, organize directories, readme, icon in browser
 // tests
@@ -27,11 +33,6 @@ import { primaryTextColor } from "./globalStyles";
 // - display image
 // - upload image from website so you don't have to go into supabase to change image (will also have to handle displaying it)
 // - deploy so you don't have to use on your laptop running
-
-const getDefaultDate = () => {
-  const today = new Date();
-  return `${today.getMonth() + 1}/${today.getDate()}/${today.getFullYear()}`;
-};
 
 export const EventForm = ({
   dayEvent,
@@ -55,7 +56,7 @@ export const EventForm = ({
   } = dayEvent ?? {};
 
   // sources is a stringified array, but due to current db formatting, needs single apostrophes replaced with double quotes
-  const originalSources: string[] = JSON.parse(sources.replace(/'/g, '"'));
+  const originalSources = rawDbSourcesToArray(sources);
 
   const [newTitle, setNewTitle] = useState(title);
   const [newDate, setNewDate] = useState(date);
@@ -75,40 +76,18 @@ export const EventForm = ({
   };
 
   const handleSubmit = async () => {
-    // remove empty sources that user may have left unresolved
-    const filteredSources = newSources.filter((source) => source);
-    const stringifiedSources = JSON.stringify(filteredSources);
-    const formattedSources = stringifiedSources.replace(/"/g, "'");
     if (isEditMode) {
-      const { error } = await supabase
-        .from(tableName)
-        .update({
-          title: newTitle,
-          slugTitle: stringToSlug(newTitle),
-          date: newDate,
-          category: newCategory,
-          otd: newOtd,
-          imgSrc: newImgSrc,
-          imgAltText: newImgAltText,
-          NSFW: newNSFW,
-          description: newDescription,
-          sources: formattedSources,
-        })
-        .eq("id", id);
-      error
-        ? toast.error(
-            `Error while attempting to update event: ${error.message}`,
-            {
-              position: toast.POSITION.TOP_RIGHT,
-            }
-          )
-        : toast.success("Event successfully updated!", {
-            position: toast.POSITION.TOP_RIGHT,
-          });
+      handleEdit();
     } else {
-      // add event
-      const { error } = await supabase.from(tableName).insert({
-        id,
+      handleAdd();
+    }
+  };
+
+  const handleEdit = async () => {
+    const formattedSources = sourcesArrayToDbString(newSources);
+    const { error } = await supabase
+      .from(tableName)
+      .update({
         title: newTitle,
         slugTitle: stringToSlug(newTitle),
         date: newDate,
@@ -119,30 +98,43 @@ export const EventForm = ({
         NSFW: newNSFW,
         description: newDescription,
         sources: formattedSources,
-      });
-      if (!error) {
-        collapseAddForm?.();
-      }
-      error
-        ? toast.error(`Error while attempting to add event: ${error.message}`, {
-            position: toast.POSITION.TOP_RIGHT,
-          })
-        : toast.success("Event successfully added!", {
-            position: toast.POSITION.TOP_RIGHT,
-          });
-    }
-  };
-
-  const handleDelete = async () => {
-    const { error } = await supabase.from(tableName).delete().eq("id", id);
+      })
+      .eq("id", id);
     error
       ? toast.error(
-          `Error while attempting to delete event: ${error.message}`,
+          `Error while attempting to update event: ${error.message}`,
           {
             position: toast.POSITION.TOP_RIGHT,
           }
         )
-      : toast.success("Successfully deleted event!", {
+      : toast.success("Event successfully updated!", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+  };
+
+  const handleAdd = async () => {
+    const formattedSources = sourcesArrayToDbString(newSources);
+    const { error } = await supabase.from(tableName).insert({
+      id,
+      title: newTitle,
+      slugTitle: stringToSlug(newTitle),
+      date: newDate,
+      category: newCategory,
+      otd: newOtd,
+      imgSrc: newImgSrc,
+      imgAltText: newImgAltText,
+      NSFW: newNSFW,
+      description: newDescription,
+      sources: formattedSources,
+    });
+    if (!error) {
+      collapseAddForm?.();
+    }
+    error
+      ? toast.error(`Error while attempting to add event: ${error.message}`, {
+          position: toast.POSITION.TOP_RIGHT,
+        })
+      : toast.success("Event successfully added!", {
           position: toast.POSITION.TOP_RIGHT,
         });
   };
@@ -198,7 +190,7 @@ export const EventForm = ({
             </div>
             <div style={styles.secondFormRow}>
               <StyledTextField
-                label="Image Source (supabase storage reference)"
+                label="Image Source (storage reference)"
                 value={newImgSrc}
                 onChange={(e) => setNewImgSrc(e.target.value)}
               />
@@ -240,7 +232,7 @@ export const EventForm = ({
               originalSources={originalSources}
             />
             <div>
-              <Button
+              <StyledButton
                 variant="contained"
                 sx={styles.buttonStyle}
                 onClick={handleSubmit}
@@ -248,17 +240,8 @@ export const EventForm = ({
                 type="button"
               >
                 {`${isEditMode ? "Update" : "Add"}`}
-              </Button>
-              {isEditMode && (
-                <Button
-                  variant="contained"
-                  sx={styles.deleteButtonStyle}
-                  onClick={handleDelete}
-                  type="button"
-                >
-                  Delete
-                </Button>
-              )}
+              </StyledButton>
+              {isEditMode && <DeleteButton id={id} />}
             </div>
           </div>
         </AccordionDetails>

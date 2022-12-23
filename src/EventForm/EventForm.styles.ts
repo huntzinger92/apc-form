@@ -1,11 +1,4 @@
-import {
-  primaryBlue,
-  primaryBlueDisabled,
-  primaryBlueHover,
-  primaryTextColor,
-  secondaryBlue,
-  secondaryTextColor,
-} from "./globalStyles";
+import { primaryTextColor, secondaryBlue } from "../globalStyles";
 
 export const formContainer = {
   display: "flex",
@@ -26,19 +19,9 @@ export const secondFormRow = {
 };
 
 export const buttonStyle = {
-  ...secondaryTextColor,
-  textTransform: "none" as "none",
   width: "115px",
   margin: "auto",
   marginBottom: "15px",
-  backgroundColor: primaryBlue,
-  ":hover": {
-    backgroundColor: primaryBlueHover,
-  },
-  "&.Mui-disabled": {
-    backgroundColor: primaryBlueDisabled,
-  },
-  cursor: "pointer",
 };
 
 export const deleteButtonStyle = {

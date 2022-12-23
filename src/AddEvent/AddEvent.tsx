@@ -1,7 +1,8 @@
 import { useState } from "react";
-import Button from "@mui/material/Button";
-import { EventForm } from "./EventForm";
+import { EventForm } from "../EventForm/EventForm";
 import * as styles from "./AddEvent.styles";
+import { StyledButton } from "../StyledButton/StyledButton";
+import { eventFormsContainer } from "../EventsByDate/EventsByDate.styles";
 
 export const AddEvent = () => {
   const [showAddForm, setShowAddForm] = useState<boolean>(false);
@@ -11,16 +12,16 @@ export const AddEvent = () => {
   };
 
   return (
-    <div>
+    <div style={eventFormsContainer}>
       {!showAddForm && (
         <div style={styles.addIconWrapper}>
-          <Button
+          <StyledButton
             sx={styles.addButtonStyle}
             variant="contained"
             onClick={() => setShowAddForm(true)}
           >
             Add New Event
-          </Button>
+          </StyledButton>
         </div>
       )}
       <div style={styles.addTierFormWrapper(showAddForm)}>
