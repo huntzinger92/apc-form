@@ -183,10 +183,9 @@ export const EventForm = ({
               onChange={(e) => setNewImgAltText(e.target.value)}
             />
             <div>
-              <Typography sx={styles.textColor}>NSFW</Typography>
+              <Typography>NSFW</Typography>
               <Checkbox
                 defaultChecked={NSFW}
-                sx={styles.textColor}
                 onChange={() => setNewNSFW(!newNSFW)}
               />
             </div>

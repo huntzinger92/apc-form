@@ -1,3 +1,9 @@
+import {
+  primaryBlue,
+  primaryBlueHover,
+  secondaryTextColor,
+} from "./globalStyles";
+
 export const addIconWrapper = {
   width: "100%",
   display: "flex",
@@ -7,13 +13,13 @@ export const addIconWrapper = {
 export const addIconStyle = { cursor: "pointer" };
 
 export const addButtonStyle = {
+  ...secondaryTextColor,
   textTransform: "none" as "none",
   cursor: "pointer",
-  backgroundColor: "#86A5D9",
+  backgroundColor: primaryBlue,
   ":hover": {
-    backgroundColor: "#648CD1",
+    backgroundColor: primaryBlueHover,
   },
-  color: "#1c1c1c",
   margin: "auto",
   marginBottom: "15px",
 };

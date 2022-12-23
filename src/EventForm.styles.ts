@@ -1,3 +1,12 @@
+import {
+  primaryBlue,
+  primaryBlueDisabled,
+  primaryBlueHover,
+  primaryTextColor,
+  secondaryBlue,
+  secondaryTextColor,
+} from "./globalStyles";
+
 export const formContainer = {
   display: "flex",
   flexDirection: "column" as "column",
@@ -17,18 +26,18 @@ export const secondFormRow = {
 };
 
 export const buttonStyle = {
+  ...secondaryTextColor,
   textTransform: "none" as "none",
   width: "115px",
   margin: "auto",
   marginBottom: "15px",
-  backgroundColor: "#86A5D9",
+  backgroundColor: primaryBlue,
   ":hover": {
-    backgroundColor: "#648CD1",
+    backgroundColor: primaryBlueHover,
   },
   "&.Mui-disabled": {
-    backgroundColor: "#7893C2",
+    backgroundColor: primaryBlueDisabled,
   },
-  color: "#1c1c1c",
   cursor: "pointer",
 };
 
@@ -37,15 +46,13 @@ export const deleteButtonStyle = {
   marginLeft: "15px",
 };
 
-export const textColor = {
-  color: "white",
-};
-
 export const accordionHeaderStyle = {
   display: "flex",
   justifyContent: "space-between",
   width: "100%",
-  ...textColor,
 };
 
-export const accordionBackgroundColor = { backgroundColor: "#403c56" };
+export const accordionBackgroundColor = {
+  backgroundColor: secondaryBlue,
+  ...primaryTextColor,
+};

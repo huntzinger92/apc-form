@@ -1,20 +1,25 @@
 import TextField, { TextFieldProps } from "@mui/material/TextField";
+import {
+  primaryBlue,
+  primaryBlueHover,
+  primaryTextColor,
+} from "./globalStyles";
 
 export const StyledTextField = (props: TextFieldProps) => {
   let sx = {
-    input: { color: "white" },
-    textarea: { color: "white" },
-    label: { color: "white" },
+    input: primaryTextColor,
+    textarea: primaryTextColor,
+    label: primaryTextColor,
     fieldset: { borderColor: "white" },
     "& label.Mui-focused": {
-      color: "#648CD1",
+      color: primaryBlueHover,
     },
     "& .MuiOutlinedInput-root": {
       "&.Mui-focused fieldset": {
-        borderColor: "#648CD1",
+        borderColor: primaryBlueHover,
       },
       "&:hover fieldset": {
-        borderColor: "#86A5D9",
+        borderColor: primaryBlue,
       },
     },
   };

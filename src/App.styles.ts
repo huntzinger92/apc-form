@@ -1,3 +1,9 @@
+import {
+  primaryBlue,
+  primaryBlueHover,
+  secondaryTextColor,
+} from "./globalStyles";
+
 export const appContainerTextAlign = {
   textAlign: "center" as "center",
 };
@@ -12,12 +18,12 @@ export const loginContainer = {
 };
 
 export const buttonNoTextTransform = {
+  ...secondaryTextColor,
   textTransform: "none" as "none",
-  backgroundColor: "#86A5D9",
+  backgroundColor: primaryBlue,
   ":hover": {
-    backgroundColor: "#648CD1",
+    backgroundColor: primaryBlueHover,
   },
-  color: "#1c1c1c",
 };
 
 export const eventFormsContainer = {

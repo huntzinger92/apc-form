@@ -1,3 +1,5 @@
+import { primaryTextColor } from "./globalStyles";
+
 export const sourceInputsContainer = {
   display: "flex",
   gap: "15px",
@@ -10,18 +12,14 @@ export const inputRow = {
   alignItems: "center",
 };
 
-export const textColor = {
-  color: "white",
-};
-
 export const sourcesHeader = {
-  ...textColor,
+  ...primaryTextColor,
   marginBottom: "15px",
 };
 
 export const iconStyle = {
   cursor: "pointer" as "pointer",
-  ...textColor,
+  ...primaryTextColor,
 };
 
 export const inputStyle = {
