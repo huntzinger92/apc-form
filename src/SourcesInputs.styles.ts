@@ -1,9 +1,7 @@
 export const sourceInputsContainer = {
-  //   display: "flex",
-  //   flexDirection: "column" as "column",
-  display: "grid",
-  gridTemplateColumns: "1fr 1fr",
+  display: "flex",
   gap: "15px",
+  flexWrap: "wrap" as "wrap",
 };
 
 export const inputRow = {
@@ -12,8 +10,18 @@ export const inputRow = {
   alignItems: "center",
 };
 
+export const textColor = {
+  color: "white",
+};
+
+export const sourcesHeader = {
+  ...textColor,
+  marginBottom: "15px",
+};
+
 export const iconStyle = {
   cursor: "pointer" as "pointer",
+  ...textColor,
 };
 
 export const inputStyle = {

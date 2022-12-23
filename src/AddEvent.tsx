@@ -1,6 +1,7 @@
 import { useState } from "react";
-import AddIcon from "@mui/icons-material/Add";
+import Button from "@mui/material/Button";
 import { EventForm } from "./EventForm";
+import * as styles from "./AddEvent.styles";
 
 export const AddEvent = () => {
   const [showAddForm, setShowAddForm] = useState<boolean>(false);
@@ -9,20 +10,22 @@ export const AddEvent = () => {
     setShowAddForm(false);
   };
 
-  return showAddForm ? (
-    <EventForm collapseAddForm={collapseAddForm} />
-  ) : (
-    <div
-      style={{
-        width: "100%",
-        display: "flex",
-        justifyContent: "flex-end",
-      }}
-    >
-      <AddIcon
-        style={{ cursor: "pointer" }}
-        onClick={() => setShowAddForm(true)}
-      />
+  return (
+    <div>
+      {!showAddForm && (
+        <div style={styles.addIconWrapper}>
+          <Button
+            sx={styles.addButtonStyle}
+            variant="contained"
+            onClick={() => setShowAddForm(true)}
+          >
+            Add New Event
+          </Button>
+        </div>
+      )}
+      <div style={styles.addTierFormWrapper(showAddForm)}>
+        <EventForm collapseAddForm={collapseAddForm} />
+      </div>
     </div>
   );
 };

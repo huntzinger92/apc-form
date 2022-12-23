@@ -1,10 +1,8 @@
-import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
+import DeleteIcon from "@mui/icons-material/Delete";
 import Typography from "@mui/material/Typography";
 import Accordion from "@mui/material/Accordion";
-import RemoveIcon from "@mui/icons-material/Remove";
-import DeleteIcon from "@mui/icons-material/Delete";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import { ChangeEvent, useState } from "react";
@@ -14,15 +12,13 @@ import { supabase } from "./supabaseClient";
 import { IEvent } from "./types";
 import * as styles from "./EventForm.styles";
 import { SourcesInputs } from "./SourcesInputs";
+import { StyledTextField } from "./StyledTextField";
 
-// use generated supabase types (need to install docker?)
 // non alert success and error handling (non auth attempt to update seems to cause 404?)
-// CSS to prettify everything (remove App.css)
+// CSS to prettify everything
+// try creating an MUI theme, move styles to styles
 // cleanup - create separate components/utils, organize directories, readme, icon in browser
 // tests
-
-// create
-// delete
 
 // apply to real eventLibrary table!
 
@@ -71,6 +67,8 @@ export const EventForm = ({
   const [newDescription, setNewDescription] = useState(description);
   const [newSources, setNewSources] = useState<string[]>(originalSources);
 
+  const tableName = "eventLibrary_test";
+
   const handleNewDate = (e: ChangeEvent<HTMLInputElement>) => {
     const [newYear, newMonth, newDay] = e.target.value.split("-");
     setNewDate(`${newMonth}/${newDay}/${newYear}`);
@@ -83,7 +81,7 @@ export const EventForm = ({
     const formattedSources = stringifiedSources.replace(/"/g, "'");
     if (isEditMode) {
       const { error } = await supabase
-        .from("eventLibrary_test")
+        .from(tableName)
         .update({
           title: newTitle,
           slugTitle: stringToSlug(newTitle),
@@ -100,7 +98,7 @@ export const EventForm = ({
       alert(error ? error.message : "Event successfully updated!");
     } else {
       // add event
-      const { error } = await supabase.from("eventLibrary_test").insert({
+      const { error } = await supabase.from(tableName).insert({
         id,
         title: newTitle,
         slugTitle: stringToSlug(newTitle),
@@ -121,10 +119,7 @@ export const EventForm = ({
   };
 
   const handleDelete = async () => {
-    const { error } = await supabase
-      .from("eventLibrary_test")
-      .delete()
-      .eq("id", id);
+    const { error } = await supabase.from(tableName).delete().eq("id", id);
     alert(error ? error.message : "Successfully deleted event!");
   };
 
@@ -142,30 +137,24 @@ export const EventForm = ({
     newDescription;
 
   return (
-    <Accordion>
+    <Accordion sx={styles.accordionBackgroundColor}>
       <AccordionSummary>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            width: "100%",
-          }}
-        >
+        <div style={styles.accordionHeaderStyle}>
           <Typography>{title || "New Event"}</Typography>
-          {!isEditMode && <RemoveIcon onClick={collapseAddForm} />}
+          {!isEditMode && <DeleteIcon onClick={collapseAddForm} />}
         </div>
       </AccordionSummary>
       <AccordionDetails>
         <div style={styles.formContainer}>
           <div style={styles.firstFormRow}>
-            <TextField
+            <StyledTextField
               required
               error={!newTitle}
               label="Title"
               value={newTitle}
               onChange={(e) => setNewTitle(e.target.value)}
             />
-            <TextField
+            <StyledTextField
               required
               error={!newDate}
               label="Date"
@@ -173,7 +162,7 @@ export const EventForm = ({
               value={formattedDate}
               onChange={handleNewDate}
             />
-            <TextField
+            <StyledTextField
               required
               error={!newCategory}
               label="Category"
@@ -182,26 +171,27 @@ export const EventForm = ({
             />
           </div>
           <div style={styles.secondFormRow}>
-            <TextField
+            <StyledTextField
               label="Image Source (supabase storage reference)"
               value={newImgSrc}
               onChange={(e) => setNewImgSrc(e.target.value)}
             />
-            <TextField
+            <StyledTextField
               multiline
               label="Image Caption"
               value={newImgAltText}
               onChange={(e) => setNewImgAltText(e.target.value)}
             />
             <div>
-              <Typography>NSFW</Typography>
+              <Typography sx={styles.textColor}>NSFW</Typography>
               <Checkbox
                 defaultChecked={NSFW}
+                sx={styles.textColor}
                 onChange={() => setNewNSFW(!newNSFW)}
               />
             </div>
           </div>
-          <TextField
+          <StyledTextField
             required
             multiline
             error={!otdValid}
@@ -209,14 +199,14 @@ export const EventForm = ({
             value={newOtd}
             onChange={(e) => setNewOtd(e.target.value)}
           />
-          <TextField
+          <StyledTextField
             required
             multiline
             error={!newDescription}
             label="Description"
             value={newDescription}
             onChange={(e) => setNewDescription(e.target.value)}
-            rows={12}
+            rows={9}
           />
           <SourcesInputs
             setNewSources={setNewSources}
@@ -225,18 +215,23 @@ export const EventForm = ({
           />
           <div>
             <Button
-              style={styles.buttonStyle}
+              variant="contained"
+              sx={styles.buttonStyle}
               onClick={handleSubmit}
               disabled={!formValid}
               type="button"
             >
-              {`${isEditMode ? "Update" : "Add"} Event`}
+              {`${isEditMode ? "Update" : "Add"}`}
             </Button>
             {isEditMode && (
-              <DeleteIcon
-                style={{ cursor: "pointer" }}
+              <Button
+                variant="contained"
+                sx={styles.deleteButtonStyle}
                 onClick={handleDelete}
-              />
+                type="button"
+              >
+                Delete
+              </Button>
             )}
           </div>
         </div>

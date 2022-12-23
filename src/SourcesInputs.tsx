@@ -1,7 +1,8 @@
-import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import * as styles from "./SourcesInputs.styles";
+import { StyledTextField } from "./StyledTextField";
 
 interface ISourcesInputsProps {
   setNewSources: (sources: string[]) => void;
@@ -39,14 +40,14 @@ export const SourcesInputs = ({
 
   return (
     <div>
-      <h4>Sources</h4>
+      <Typography style={styles.sourcesHeader}>Sources</Typography>
       <div style={styles.sourceInputsContainer}>
         {newSources.map((source, index) => (
           <div
             style={styles.inputRow}
             key={`${originalSources[index]}-${index}`}
           >
-            <TextField
+            <StyledTextField
               style={styles.inputStyle}
               error={isInputInvalid(index)}
               label={`Source ${index + 1}`}

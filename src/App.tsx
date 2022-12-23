@@ -1,11 +1,12 @@
-import "./App.css";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 import { supabase } from "./supabaseClient";
 import { ChangeEvent, useEffect, useState } from "react";
 import { EventForm } from "./EventForm";
 import { IEvent } from "./types";
 import { AddEvent } from "./AddEvent";
+import * as styles from "./App.styles";
+import { StyledTextField } from "./StyledTextField";
 
 function App() {
   const [dayEvents, setDayEvents] = useState<IEvent[]>([]);
@@ -42,46 +43,39 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <div
-        style={{
-          marginTop: "20px",
-          marginBottom: "20px",
-          display: "flex",
-          gap: "15px",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <TextField
+    <div style={styles.appContainerTextAlign}>
+      <div style={styles.loginContainer}>
+        <StyledTextField
           label="Username"
           onChange={(e) => setUsername(e.target.value)}
         />
-        <TextField
+        <StyledTextField
           label="Password"
           type="password"
           onChange={(e) => setPassword(e.target.value)}
         />
-        <Button style={{ textTransform: "none" }} onClick={handleLogin}>
+        <Button
+          variant="contained"
+          sx={styles.buttonNoTextTransform}
+          onClick={handleLogin}
+        >
           Login
         </Button>
       </div>
-      <TextField
-        label="Date"
-        type="date"
-        defaultValue={defaultDate}
-        onChange={handleNewDate}
-      />
-      <div
-        style={{
-          width: "80%",
-          margin: "auto",
-          display: "flex",
-          flexDirection: "column",
-          gap: "20px",
-        }}
-      >
+      <div style={styles.eventFormsContainer}>
         <AddEvent />
+      </div>
+      <div style={styles.queryEventsByDateContainer}>
+        <Typography variant="h6">Query Existing Events</Typography>
+        <StyledTextField
+          label="Date"
+          type="date"
+          defaultValue={defaultDate}
+          onChange={handleNewDate}
+          sx={styles.dateInput}
+        />
+      </div>
+      <div style={styles.eventFormsContainer}>
         {dayEvents.map((dayEvent) => (
           <EventForm dayEvent={dayEvent} key={dayEvent.id} />
         ))}
