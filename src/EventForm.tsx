@@ -6,6 +6,8 @@ import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import { ChangeEvent, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { v4 as uuidv4 } from "uuid";
 import { stringToSlug } from "./stringToSlug";
 import { supabase } from "./supabaseClient";
@@ -13,10 +15,8 @@ import { IEvent } from "./types";
 import * as styles from "./EventForm.styles";
 import { SourcesInputs } from "./SourcesInputs";
 import { StyledTextField } from "./StyledTextField";
+import { primaryTextColor } from "./globalStyles";
 
-// non alert success and error handling (non auth attempt to update seems to cause 404?)
-// CSS to prettify everything
-// try creating an MUI theme, move styles to styles
 // cleanup - create separate components/utils, organize directories, readme, icon in browser
 // tests
 
@@ -95,7 +95,16 @@ export const EventForm = ({
           sources: formattedSources,
         })
         .eq("id", id);
-      alert(error ? error.message : "Event successfully updated!");
+      error
+        ? toast.error(
+            `Error while attempting to update event: ${error.message}`,
+            {
+              position: toast.POSITION.TOP_RIGHT,
+            }
+          )
+        : toast.success("Event successfully updated!", {
+            position: toast.POSITION.TOP_RIGHT,
+          });
     } else {
       // add event
       const { error } = await supabase.from(tableName).insert({
@@ -114,13 +123,28 @@ export const EventForm = ({
       if (!error) {
         collapseAddForm?.();
       }
-      alert(error ? error.message : "Event successfully added!");
+      error
+        ? toast.error(`Error while attempting to add event: ${error.message}`, {
+            position: toast.POSITION.TOP_RIGHT,
+          })
+        : toast.success("Event successfully added!", {
+            position: toast.POSITION.TOP_RIGHT,
+          });
     }
   };
 
   const handleDelete = async () => {
     const { error } = await supabase.from(tableName).delete().eq("id", id);
-    alert(error ? error.message : "Successfully deleted event!");
+    error
+      ? toast.error(
+          `Error while attempting to delete event: ${error.message}`,
+          {
+            position: toast.POSITION.TOP_RIGHT,
+          }
+        )
+      : toast.success("Successfully deleted event!", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
   };
 
   const [month, day, year] = newDate.split("/");
@@ -137,104 +161,108 @@ export const EventForm = ({
     newDescription;
 
   return (
-    <Accordion sx={styles.accordionBackgroundColor}>
-      <AccordionSummary>
-        <div style={styles.accordionHeaderStyle}>
-          <Typography>{title || "New Event"}</Typography>
-          {!isEditMode && <DeleteIcon onClick={collapseAddForm} />}
-        </div>
-      </AccordionSummary>
-      <AccordionDetails>
-        <div style={styles.formContainer}>
-          <div style={styles.firstFormRow}>
-            <StyledTextField
-              required
-              error={!newTitle}
-              label="Title"
-              value={newTitle}
-              onChange={(e) => setNewTitle(e.target.value)}
-            />
-            <StyledTextField
-              required
-              error={!newDate}
-              label="Date"
-              type="date"
-              value={formattedDate}
-              onChange={handleNewDate}
-            />
-            <StyledTextField
-              required
-              error={!newCategory}
-              label="Category"
-              value={newCategory}
-              onChange={(e) => setNewCategory(e.target.value)}
-            />
+    <>
+      <ToastContainer autoClose={4000} />
+      <Accordion sx={styles.accordionBackgroundColor}>
+        <AccordionSummary>
+          <div style={styles.accordionHeaderStyle}>
+            <Typography>{title || "New Event"}</Typography>
+            {!isEditMode && <DeleteIcon onClick={collapseAddForm} />}
           </div>
-          <div style={styles.secondFormRow}>
-            <StyledTextField
-              label="Image Source (supabase storage reference)"
-              value={newImgSrc}
-              onChange={(e) => setNewImgSrc(e.target.value)}
-            />
-            <StyledTextField
-              multiline
-              label="Image Caption"
-              value={newImgAltText}
-              onChange={(e) => setNewImgAltText(e.target.value)}
-            />
-            <div>
-              <Typography>NSFW</Typography>
-              <Checkbox
-                defaultChecked={NSFW}
-                onChange={() => setNewNSFW(!newNSFW)}
+        </AccordionSummary>
+        <AccordionDetails>
+          <div style={styles.formContainer}>
+            <div style={styles.firstFormRow}>
+              <StyledTextField
+                required
+                error={!newTitle}
+                label="Title"
+                value={newTitle}
+                onChange={(e) => setNewTitle(e.target.value)}
+              />
+              <StyledTextField
+                required
+                error={!newDate}
+                label="Date"
+                type="date"
+                value={formattedDate}
+                onChange={handleNewDate}
+              />
+              <StyledTextField
+                required
+                error={!newCategory}
+                label="Category"
+                value={newCategory}
+                onChange={(e) => setNewCategory(e.target.value)}
               />
             </div>
-          </div>
-          <StyledTextField
-            required
-            multiline
-            error={!otdValid}
-            label="On this day statement (social media title)"
-            value={newOtd}
-            onChange={(e) => setNewOtd(e.target.value)}
-          />
-          <StyledTextField
-            required
-            multiline
-            error={!newDescription}
-            label="Description"
-            value={newDescription}
-            onChange={(e) => setNewDescription(e.target.value)}
-            rows={9}
-          />
-          <SourcesInputs
-            setNewSources={setNewSources}
-            newSources={newSources}
-            originalSources={originalSources}
-          />
-          <div>
-            <Button
-              variant="contained"
-              sx={styles.buttonStyle}
-              onClick={handleSubmit}
-              disabled={!formValid}
-              type="button"
-            >
-              {`${isEditMode ? "Update" : "Add"}`}
-            </Button>
-            {isEditMode && (
+            <div style={styles.secondFormRow}>
+              <StyledTextField
+                label="Image Source (supabase storage reference)"
+                value={newImgSrc}
+                onChange={(e) => setNewImgSrc(e.target.value)}
+              />
+              <StyledTextField
+                multiline
+                label="Image Caption"
+                value={newImgAltText}
+                onChange={(e) => setNewImgAltText(e.target.value)}
+              />
+              <div>
+                <Typography>NSFW</Typography>
+                <Checkbox
+                  defaultChecked={NSFW}
+                  sx={primaryTextColor}
+                  onChange={() => setNewNSFW(!newNSFW)}
+                />
+              </div>
+            </div>
+            <StyledTextField
+              required
+              multiline
+              error={!otdValid}
+              label="On this day statement (social media title)"
+              value={newOtd}
+              onChange={(e) => setNewOtd(e.target.value)}
+            />
+            <StyledTextField
+              required
+              multiline
+              error={!newDescription}
+              label="Description"
+              value={newDescription}
+              onChange={(e) => setNewDescription(e.target.value)}
+              rows={9}
+            />
+            <SourcesInputs
+              setNewSources={setNewSources}
+              newSources={newSources}
+              originalSources={originalSources}
+            />
+            <div>
               <Button
                 variant="contained"
-                sx={styles.deleteButtonStyle}
-                onClick={handleDelete}
+                sx={styles.buttonStyle}
+                onClick={handleSubmit}
+                disabled={!formValid}
                 type="button"
               >
-                Delete
+                {`${isEditMode ? "Update" : "Add"}`}
               </Button>
-            )}
+              {isEditMode && (
+                <Button
+                  variant="contained"
+                  sx={styles.deleteButtonStyle}
+                  onClick={handleDelete}
+                  type="button"
+                >
+                  Delete
+                </Button>
+              )}
+            </div>
           </div>
-        </div>
-      </AccordionDetails>
-    </Accordion>
+        </AccordionDetails>
+      </Accordion>
+    </>
   );
 };

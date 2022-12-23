@@ -2,6 +2,8 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { supabase } from "./supabaseClient";
 import { ChangeEvent, useEffect, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { EventForm } from "./EventForm";
 import { IEvent } from "./types";
 import { AddEvent } from "./AddEvent";
@@ -39,48 +41,57 @@ function App() {
       email: username,
       password,
     });
-    alert(error ? error.message : "successfully logged in");
+    error
+      ? toast.error(`Error while logging in: ${error.message}`, {
+          position: toast.POSITION.TOP_RIGHT,
+        })
+      : toast.success("Successfully logged in!", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
   };
 
   return (
-    <div style={styles.appContainerTextAlign}>
-      <div style={styles.loginContainer}>
-        <StyledTextField
-          label="Username"
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <StyledTextField
-          label="Password"
-          type="password"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <Button
-          variant="contained"
-          sx={styles.buttonNoTextTransform}
-          onClick={handleLogin}
-        >
-          Login
-        </Button>
+    <>
+      <ToastContainer autoClose={4000} />
+      <div style={styles.appContainerTextAlign}>
+        <div style={styles.loginContainer}>
+          <StyledTextField
+            label="Username"
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <StyledTextField
+            label="Password"
+            type="password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <Button
+            variant="contained"
+            sx={styles.buttonNoTextTransform}
+            onClick={handleLogin}
+          >
+            Login
+          </Button>
+        </div>
+        <div style={styles.eventFormsContainer}>
+          <AddEvent />
+        </div>
+        <div style={styles.queryEventsByDateContainer}>
+          <Typography variant="h6">Query Existing Events</Typography>
+          <StyledTextField
+            label="Date"
+            type="date"
+            defaultValue={defaultDate}
+            onChange={handleNewDate}
+            sx={styles.dateInput}
+          />
+        </div>
+        <div style={styles.eventFormsContainer}>
+          {dayEvents.map((dayEvent) => (
+            <EventForm dayEvent={dayEvent} key={dayEvent.id} />
+          ))}
+        </div>
       </div>
-      <div style={styles.eventFormsContainer}>
-        <AddEvent />
-      </div>
-      <div style={styles.queryEventsByDateContainer}>
-        <Typography variant="h6">Query Existing Events</Typography>
-        <StyledTextField
-          label="Date"
-          type="date"
-          defaultValue={defaultDate}
-          onChange={handleNewDate}
-          sx={styles.dateInput}
-        />
-      </div>
-      <div style={styles.eventFormsContainer}>
-        {dayEvents.map((dayEvent) => (
-          <EventForm dayEvent={dayEvent} key={dayEvent.id} />
-        ))}
-      </div>
-    </div>
+    </>
   );
 }
 
