@@ -1,5 +1,6 @@
 import Checkbox from "@mui/material/Checkbox";
 import DeleteIcon from "@mui/icons-material/Delete";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import Typography from "@mui/material/Typography";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -23,7 +24,7 @@ import {
   sourcesArrayToDbString,
 } from "./EventForm.utils";
 
-// cleanup - create separate components/utils, organize directories, readme, icon in browser
+// cleanup - readme, icon in browser, figure out how to get table in process.env
 // tests
 
 // apply to real eventLibrary table!
@@ -31,14 +32,14 @@ import {
 // nice to haves:
 // - search by term instead of day
 // - display image
-// - upload image from website so you don't have to go into supabase to change image (will also have to handle displaying it)
-// - deploy so you don't have to use on your laptop running
+// - upload image from website to supabase so you don't have to go into supabase to change image
+// - deploy so you don't have to use locally on your laptop
 
 export const EventForm = ({
   dayEvent,
   collapseAddForm,
 }: {
-  dayEvent?: Partial<IEvent>;
+  dayEvent?: IEvent;
   collapseAddForm?: () => void;
 }) => {
   const isEditMode = !!dayEvent;
@@ -159,7 +160,12 @@ export const EventForm = ({
         <AccordionSummary>
           <div style={styles.accordionHeaderStyle}>
             <Typography>{title || "New Event"}</Typography>
-            {!isEditMode && <DeleteIcon onClick={collapseAddForm} />}
+            {!isEditMode && (
+              <DeleteIcon
+                onClick={collapseAddForm}
+                data-testid="discard-event-icon"
+              />
+            )}
           </div>
         </AccordionSummary>
         <AccordionDetails>
@@ -169,6 +175,7 @@ export const EventForm = ({
                 required
                 error={!newTitle}
                 label="Title"
+                placeholder="Title"
                 value={newTitle}
                 onChange={(e) => setNewTitle(e.target.value)}
               />
@@ -176,6 +183,7 @@ export const EventForm = ({
                 required
                 error={!newDate}
                 label="Date"
+                placeholder="Date"
                 type="date"
                 value={formattedDate}
                 onChange={handleNewDate}
@@ -184,6 +192,7 @@ export const EventForm = ({
                 required
                 error={!newCategory}
                 label="Category"
+                placeholder="Category"
                 value={newCategory}
                 onChange={(e) => setNewCategory(e.target.value)}
               />
@@ -191,29 +200,29 @@ export const EventForm = ({
             <div style={styles.secondFormRow}>
               <StyledTextField
                 label="Image Source (storage reference)"
+                placeholder="Event/someImg.jpg"
                 value={newImgSrc}
                 onChange={(e) => setNewImgSrc(e.target.value)}
               />
               <StyledTextField
                 multiline
                 label="Image Caption"
+                placeholder="Image Caption"
                 value={newImgAltText}
                 onChange={(e) => setNewImgAltText(e.target.value)}
               />
-              <div>
-                <Typography>NSFW</Typography>
-                <Checkbox
-                  defaultChecked={NSFW}
-                  sx={primaryTextColor}
-                  onChange={() => setNewNSFW(!newNSFW)}
-                />
-              </div>
+              <FormControlLabel
+                control={<Checkbox value={NSFW} sx={primaryTextColor} />}
+                label="NSFW"
+                onChange={() => setNewNSFW(!newNSFW)}
+              />
             </div>
             <StyledTextField
               required
               multiline
               error={!otdValid}
               label="On this day statement (social media title)"
+              placeholder="On this day..."
               value={newOtd}
               onChange={(e) => setNewOtd(e.target.value)}
             />
@@ -222,6 +231,7 @@ export const EventForm = ({
               multiline
               error={!newDescription}
               label="Description"
+              placeholder="Description"
               value={newDescription}
               onChange={(e) => setNewDescription(e.target.value)}
               rows={9}

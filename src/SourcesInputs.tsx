@@ -51,6 +51,7 @@ export const SourcesInputs = ({
               style={styles.inputStyle}
               error={isInputInvalid(index)}
               label={`Source ${index + 1}`}
+              placeholder="https://en.wikipedia.org/"
               value={source}
               onChange={(e) => handleNewSource(e.target.value, index)}
             />
@@ -61,7 +62,11 @@ export const SourcesInputs = ({
           </div>
         ))}
         <div style={styles.inputRow}>
-          <AddIcon style={styles.iconStyle} onClick={handleAddSource} />
+          <AddIcon
+            style={styles.iconStyle}
+            onClick={handleAddSource}
+            data-testid="add-source-icon"
+          />
         </div>
       </div>
     </div>
