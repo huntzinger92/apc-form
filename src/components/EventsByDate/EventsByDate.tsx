@@ -6,6 +6,8 @@ import { supabase } from "../../supabaseClient";
 import { IEvent } from "../../types";
 import * as styles from "./EventsByDate.styles";
 
+// add error and load handling here
+
 export const EventsByDate = () => {
   const [dayEvents, setDayEvents] = useState<IEvent[]>([]);
 

@@ -17,7 +17,7 @@ import { SourcesInputs } from "../../SourcesInputs";
 import { StyledTextField } from "../../StyledTextField";
 import { primaryTextColor } from "../../globalStyles";
 import { StyledButton } from "../StyledButton/StyledButton";
-import { DeleteButton } from "./DeleteIcon";
+import { DeleteButton } from "./DeleteButton";
 import {
   getDefaultDate,
   rawDbSourcesToArray,

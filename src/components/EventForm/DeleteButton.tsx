@@ -4,11 +4,11 @@ import { StyledButton } from "../StyledButton/StyledButton";
 import { supabase } from "../../supabaseClient";
 import * as styles from "./EventForm.styles";
 
-export interface IDeleteIcon {
+export interface IDeleteButtonProps {
   id: string;
 }
 
-export const DeleteButton = ({ id }: IDeleteIcon) => {
+export const DeleteButton = ({ id }: IDeleteButtonProps) => {
   const tablename = "eventLibrary_test";
   const handleDelete = async () => {
     const { error } = await supabase.from(tablename).delete().eq("id", id);
