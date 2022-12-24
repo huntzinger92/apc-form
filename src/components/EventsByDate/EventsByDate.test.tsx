@@ -1,4 +1,5 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
+import { IEvent } from "../../types";
 import { EventsByDate } from "./EventsByDate";
 
 jest.mock("../../supabaseClient", () => ({
@@ -10,7 +11,7 @@ jest.mock("../../supabaseClient", () => ({
 
 describe("EventsByDate", () => {
   const mockFrom = jest.requireMock("../../supabaseClient").supabase.from;
-  const mockEvents = [
+  const mockEvents: Partial<IEvent>[] = [
     {
       id: "1",
       title: "Title 1",
@@ -42,4 +43,24 @@ describe("EventsByDate", () => {
       expect(await screen.findByText(eventTitle)).toBeInTheDocument();
     }
   );
+  it("renders a loading spinner on mount", () => {
+    render(<EventsByDate />);
+    expect(screen.getByTestId("loading-spinner")).toBeInTheDocument();
+  });
+  it("removes loading spinner after query success", async () => {
+    render(<EventsByDate />);
+    await waitFor(() =>
+      expect(screen.queryByTestId("loading-spinner")).not.toBeInTheDocument()
+    );
+  });
+  it("displays error toast on query error", async () => {
+    //@ts-ignore-next-line
+    mockLikeFilter.mockImplementation(() => ({
+      error: { message: "message" },
+    }));
+    render(<EventsByDate />);
+    expect(
+      await screen.findByText("Error while fetching events: message")
+    ).toBeInTheDocument();
+  });
 });

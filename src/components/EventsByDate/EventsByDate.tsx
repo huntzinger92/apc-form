@@ -1,14 +1,15 @@
 import Typography from "@mui/material/Typography";
+import CircularProgress from "@mui/material/CircularProgress";
 import { ChangeEvent, useEffect, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
 import { EventForm } from "../EventForm/EventForm";
 import { StyledTextField } from "../../StyledTextField";
 import { supabase } from "../../supabaseClient";
 import { IEvent } from "../../types";
 import * as styles from "./EventsByDate.styles";
 
-// add error and load handling here
-
 export const EventsByDate = () => {
+  const [loading, setLoading] = useState<boolean>(false);
   const [dayEvents, setDayEvents] = useState<IEvent[]>([]);
 
   const defaultDate = new Date().toLocaleDateString("en-CA");
@@ -24,15 +25,21 @@ export const EventsByDate = () => {
   };
 
   const fetchEvents = async (month: string, day: string) => {
-    const { data: newDayEvents } = await supabase
+    setLoading(true);
+    const { data: newDayEvents, error } = await supabase
       .from("eventLibrary_test")
       .select()
-      // MM/YY/ format
+      // mm/dd/ format
       .like("date", `%${month}/${day}/%`);
     setDayEvents(newDayEvents ?? []);
+    setLoading(false);
+    if (error) {
+      toast.error(`Error while fetching events: ${error.message}`);
+    }
   };
   return (
     <div>
+      <ToastContainer />
       <div style={styles.queryEventsByDateContainer}>
         <Typography variant="h6">Query Existing Events</Typography>
         <StyledTextField
@@ -44,6 +51,11 @@ export const EventsByDate = () => {
         />
       </div>
       <div style={styles.eventFormsContainer}>
+        {loading && (
+          <span data-testid="loading-spinner">
+            <CircularProgress sx={styles.loadingSpinner} />
+          </span>
+        )}
         {dayEvents.map((dayEvent) => (
           <EventForm dayEvent={dayEvent} key={dayEvent.id} />
         ))}

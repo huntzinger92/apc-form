@@ -16,3 +16,5 @@ export const eventFormsContainer = {
   gap: "20px",
   marginTop: "25px",
 };
+
+export const loadingSpinner = { margin: "auto" };
