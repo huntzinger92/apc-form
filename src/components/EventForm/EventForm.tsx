@@ -25,7 +25,10 @@ import {
 } from "./EventForm.utils";
 
 // cleanup - readme, icon in browser, figure out how to get table in process.env
-// tests
+// choose better color scheme
+// create routing - auth check on landing page, redirect to login (routed) if not auth'd, redirect to landing page on login
+// handle loading states and error state of date query
+// how to show instant changes in UI after post request success
 
 // apply to real eventLibrary table!
 
