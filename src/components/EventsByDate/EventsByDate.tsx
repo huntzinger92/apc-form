@@ -7,6 +7,7 @@ import { StyledTextField } from "../../StyledTextField";
 import { supabase } from "../../supabaseClient";
 import { IEvent } from "../../types";
 import * as styles from "./EventsByDate.styles";
+import { AddEvent } from "../AddEvent/AddEvent";
 
 export const EventsByDate = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -31,16 +32,19 @@ export const EventsByDate = () => {
       .select()
       // mm/dd/ format
       .like("date", `%${month}/${day}/%`);
-    setDayEvents(newDayEvents ?? []);
+    const sortedEvents = newDayEvents?.sort((first, second) =>
+      first.title < second.title ? -1 : 1
+    );
+    setDayEvents(sortedEvents ?? []);
     setLoading(false);
     if (error) {
       toast.error(`Error while fetching events: ${error.message}`);
     }
   };
+
   return (
     <div>
       <div style={styles.queryEventsByDateContainer}>
-        <Typography variant="h6">Query Existing Events</Typography>
         <StyledTextField
           label="Date"
           type="date"
@@ -56,6 +60,7 @@ export const EventsByDate = () => {
         {dayEvents.length === 0 && (
           <Typography variant="h6">No events found!</Typography>
         )}
+        <AddEvent />
         {loading && (
           <span data-testid="loading-spinner">
             <CircularProgress sx={styles.loadingSpinner} />

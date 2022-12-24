@@ -12,4 +12,4 @@ export const primaryBlueHover = "#73a1f0";
 
 export const primaryBlueDisabled = "#ebebf0";
 
-export const secondaryBlack = "#1C1C1C";
+export const secondaryBlack = "#171717";

@@ -1,7 +1,6 @@
 import CircularProgress from "@mui/material/CircularProgress";
 import Typography from "@mui/material/Typography";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import { AddEvent } from "../AddEvent/AddEvent";
 import * as styles from "./App.styles";
 import { Login } from "../Login/Login";
 import { EventsByDate } from "../EventsByDate/EventsByDate";
@@ -42,8 +41,7 @@ function App() {
                   <CircularProgress sx={styles.loginLoadingSpinner} />
                 </span>
               )}
-              <AddEvent />
-              <EventsByDate />
+              {!loading && <EventsByDate />}
             </div>
           }
         />

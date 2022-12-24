@@ -29,18 +29,27 @@ export const Login = () => {
       navigate("/");
     }
   };
+
+  const disableLoginButton = !username || !password;
+
   return (
     <div style={styles.loginContainer}>
       <StyledTextField
         label="Username"
+        required
         onChange={(e) => setUsername(e.target.value)}
       />
       <StyledTextField
         label="Password"
         type="password"
+        required
         onChange={(e) => setPassword(e.target.value)}
       />
-      <StyledButton variant="contained" onClick={handleLogin}>
+      <StyledButton
+        variant="contained"
+        onClick={handleLogin}
+        disabled={disableLoginButton}
+      >
         Login
       </StyledButton>
     </div>

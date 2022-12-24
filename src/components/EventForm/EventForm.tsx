@@ -25,7 +25,13 @@ import {
 } from "./EventForm.utils";
 
 // cleanup - readme, icon in browser, figure out how to get table in process.env
-// how to show instant changes in UI after post request success
+// track selected date in state and use refetch callback on success
+// have two buttons on both edit and add - on add "Save" and "Discard"
+// unmount new event form when discard is clicked (fixes display bug)
+// only show errors on add form after user has touched (dirty input)
+// make sources icons tabbable?
+// add edit icon on right corner
+// investigate mui's date picker icon color
 
 // apply to real eventLibrary table!
 
@@ -253,7 +259,7 @@ export const EventForm = ({
               disabled={!formValid || loading}
               type="button"
             >
-              {`${isEditMode ? "Update" : "Add"}`}
+              {`${isEditMode ? "Update" : "Save"}`}
             </StyledButton>
             {isEditMode && <DeleteButton id={id} loading={loading} />}
           </div>
