@@ -60,6 +60,8 @@ export const EventForm = ({
   // sources is a stringified array, but due to current db formatting, needs single apostrophes replaced with double quotes
   const originalSources = rawDbSourcesToArray(sources);
 
+  const [loading, setLoading] = useState<boolean>(false);
+  // form state hooks
   const [newTitle, setNewTitle] = useState(title);
   const [newDate, setNewDate] = useState(date);
   const [newCategory, setNewCategory] = useState(category);
@@ -78,6 +80,7 @@ export const EventForm = ({
   };
 
   const handleSubmit = async () => {
+    setLoading(true);
     if (isEditMode) {
       handleEdit();
     } else {
@@ -112,6 +115,7 @@ export const EventForm = ({
       : toast.success("Event successfully updated!", {
           position: toast.POSITION.TOP_RIGHT,
         });
+    setLoading(false);
   };
 
   const handleAdd = async () => {
@@ -129,16 +133,17 @@ export const EventForm = ({
       description: newDescription,
       sources: formattedSources,
     });
-    if (!error) {
+    if (error) {
+      toast.error(`Error while attempting to add event: ${error.message}`, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    } else {
+      toast.success("Event successfully added!", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
       collapseAddForm?.();
     }
-    error
-      ? toast.error(`Error while attempting to add event: ${error.message}`, {
-          position: toast.POSITION.TOP_RIGHT,
-        })
-      : toast.success("Event successfully added!", {
-          position: toast.POSITION.TOP_RIGHT,
-        });
+    setLoading(false);
   };
 
   const [month, day, year] = newDate.split("/");
@@ -165,6 +170,7 @@ export const EventForm = ({
               <DeleteIcon
                 onClick={collapseAddForm}
                 data-testid="discard-event-icon"
+                sx={styles.discardEventIcon}
               />
             )}
           </div>
@@ -247,12 +253,12 @@ export const EventForm = ({
                 variant="contained"
                 sx={styles.buttonStyle}
                 onClick={handleSubmit}
-                disabled={!formValid}
+                disabled={!formValid || loading}
                 type="button"
               >
                 {`${isEditMode ? "Update" : "Add"}`}
               </StyledButton>
-              {isEditMode && <DeleteButton id={id} />}
+              {isEditMode && <DeleteButton id={id} loading={loading} />}
             </div>
           </div>
         </AccordionDetails>

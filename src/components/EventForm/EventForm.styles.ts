@@ -1,4 +1,8 @@
-import { primaryTextColor, secondaryBlack } from "../../globalStyles";
+import {
+  primaryBlueHover,
+  primaryTextColor,
+  secondaryBlack,
+} from "../../globalStyles";
 
 export const formContainer = {
   display: "flex",
@@ -38,4 +42,11 @@ export const accordionHeaderStyle = {
 export const accordionBackgroundColor = {
   backgroundColor: secondaryBlack,
   ...primaryTextColor,
+};
+
+export const discardEventIcon = {
+  transition: "color 250ms",
+  ":hover": {
+    color: primaryBlueHover,
+  },
 };

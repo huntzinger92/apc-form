@@ -6,9 +6,10 @@ import * as styles from "./EventForm.styles";
 
 export interface IDeleteButtonProps {
   id: string;
+  loading: boolean;
 }
 
-export const DeleteButton = ({ id }: IDeleteButtonProps) => {
+export const DeleteButton = ({ id, loading }: IDeleteButtonProps) => {
   const tablename = "eventLibrary_test";
   const handleDelete = async () => {
     const { error } = await supabase.from(tablename).delete().eq("id", id);
@@ -30,6 +31,7 @@ export const DeleteButton = ({ id }: IDeleteButtonProps) => {
       sx={styles.deleteButtonStyle}
       onClick={handleDelete}
       type="button"
+      disabled={loading}
     >
       Delete
     </StyledButton>

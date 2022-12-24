@@ -10,7 +10,7 @@ jest.mock("../../supabaseClient", () => ({
 }));
 
 describe("DeleteButton", () => {
-  const defaultProps = { id: "eventId" };
+  const defaultProps = { id: "eventId", loading: false };
   const mockFrom = jest.requireMock("../../supabaseClient").supabase.from;
   const mockEqFilter = jest.fn(() => ({}));
   const mockDelete = jest.fn(() => ({ eq: mockEqFilter }));
@@ -21,6 +21,10 @@ describe("DeleteButton", () => {
   it("renders Delete button", () => {
     render(<DeleteButton {...defaultProps} />);
     expect(screen.getByText("Delete")).toBeInTheDocument();
+  });
+  it("disables Delete button if loading", () => {
+    render(<DeleteButton {...defaultProps} loading />);
+    expect(screen.getByText("Delete")).toBeDisabled();
   });
   it("deletes event of passed id on delete click", () => {
     render(<DeleteButton {...defaultProps} />);

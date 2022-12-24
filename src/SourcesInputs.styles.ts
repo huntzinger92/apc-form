@@ -1,4 +1,4 @@
-import { primaryTextColor } from "./globalStyles";
+import { primaryBlueHover, primaryTextColor } from "./globalStyles";
 
 export const sourceInputsContainer = {
   display: "flex",
@@ -19,11 +19,19 @@ export const sourcesHeader = {
 
 export const iconStyle = {
   cursor: "pointer" as "pointer",
+  transition: "color 250ms",
+  ":hover": {
+    color: primaryBlueHover,
+  },
   ...primaryTextColor,
 };
 
 export const addIconStyle = (makeIconRed: boolean) => ({
   cursor: "pointer" as "pointer",
+  transition: "color 250ms",
+  ":hover": {
+    color: primaryBlueHover,
+  },
   color: makeIconRed ? "red" : primaryTextColor.color,
 });
 

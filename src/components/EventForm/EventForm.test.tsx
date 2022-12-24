@@ -264,7 +264,7 @@ describe("EventForm", () => {
       expect(mockInsert).toHaveBeenCalledWith({
         NSFW: true,
         category: "1",
-        date: "12/23/2022",
+        date: expect.any(String),
         description: "1",
         id: expect.any(String),
         imgAltText: "1",
