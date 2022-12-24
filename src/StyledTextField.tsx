@@ -14,6 +14,10 @@ export const StyledTextField = (props: TextFieldProps) => {
     "& label.Mui-focused": {
       color: primaryBlueHover,
     },
+    // "& label.Mui-error": {
+    //   color: "yellow",
+    //   borderColor: "yellow",
+    // },
     "& .MuiOutlinedInput-root": {
       "&.Mui-focused fieldset": {
         borderColor: primaryBlueHover,

@@ -6,10 +6,10 @@ export const secondaryTextColor = {
   color: "#1c1c1c",
 };
 
-export const primaryBlue = "#86A5D9";
+export const primaryBlue = "#ebebf0";
 
-export const primaryBlueHover = "#648CD1";
+export const primaryBlueHover = "#73a1f0";
 
-export const primaryBlueDisabled = "#7893C2";
+export const primaryBlueDisabled = "#ebebf0";
 
-export const secondaryBlue = "#2E405F";
+export const secondaryBlack = "#1C1C1C";

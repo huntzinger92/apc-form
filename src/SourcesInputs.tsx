@@ -38,9 +38,11 @@ export const SourcesInputs = ({
     return !atLeastOneSourceProvided && isFirstInput;
   };
 
+  const makeAddIconRed = newSources.length === 0;
+
   return (
     <div>
-      <Typography style={styles.sourcesHeader}>Sources</Typography>
+      <Typography sx={styles.sourcesHeader}>Sources</Typography>
       <div style={styles.sourceInputsContainer}>
         {newSources.map((source, index) => (
           <div
@@ -48,7 +50,7 @@ export const SourcesInputs = ({
             key={`${originalSources[index]}-${index}`}
           >
             <StyledTextField
-              style={styles.inputStyle}
+              sx={styles.inputStyle}
               error={isInputInvalid(index)}
               label={`Source ${index + 1}`}
               placeholder="https://en.wikipedia.org/"
@@ -56,14 +58,14 @@ export const SourcesInputs = ({
               onChange={(e) => handleNewSource(e.target.value, index)}
             />
             <DeleteIcon
-              style={styles.iconStyle}
+              sx={styles.iconStyle}
               onClick={() => handleDeleteSource(index)}
             />
           </div>
         ))}
         <div style={styles.inputRow}>
           <AddIcon
-            style={styles.iconStyle}
+            sx={styles.addIconStyle(makeAddIconRed)}
             onClick={handleAddSource}
             data-testid="add-source-icon"
           />

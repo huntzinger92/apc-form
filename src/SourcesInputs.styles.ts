@@ -22,6 +22,11 @@ export const iconStyle = {
   ...primaryTextColor,
 };
 
+export const addIconStyle = (makeIconRed: boolean) => ({
+  cursor: "pointer" as "pointer",
+  color: makeIconRed ? "red" : primaryTextColor.color,
+});
+
 export const inputStyle = {
   width: "300px",
 };

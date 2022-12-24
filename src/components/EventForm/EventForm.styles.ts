@@ -1,4 +1,4 @@
-import { primaryTextColor, secondaryBlue } from "../../globalStyles";
+import { primaryTextColor, secondaryBlack } from "../../globalStyles";
 
 export const formContainer = {
   display: "flex",
@@ -36,6 +36,6 @@ export const accordionHeaderStyle = {
 };
 
 export const accordionBackgroundColor = {
-  backgroundColor: secondaryBlue,
+  backgroundColor: secondaryBlack,
   ...primaryTextColor,
 };
