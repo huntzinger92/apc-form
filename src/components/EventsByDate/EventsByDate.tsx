@@ -39,7 +39,7 @@ export const EventsByDate = () => {
   };
   return (
     <div>
-      <ToastContainer />
+      <ToastContainer autoClose={3000} />
       <div style={styles.queryEventsByDateContainer}>
         <Typography variant="h6">Query Existing Events</Typography>
         <StyledTextField
@@ -51,14 +51,17 @@ export const EventsByDate = () => {
         />
       </div>
       <div style={styles.eventFormsContainer}>
+        {dayEvents.map((dayEvent) => (
+          <EventForm dayEvent={dayEvent} key={dayEvent.id} />
+        ))}
+        {dayEvents.length === 0 && (
+          <Typography variant="h6">No events found!</Typography>
+        )}
         {loading && (
           <span data-testid="loading-spinner">
             <CircularProgress sx={styles.loadingSpinner} />
           </span>
         )}
-        {dayEvents.map((dayEvent) => (
-          <EventForm dayEvent={dayEvent} key={dayEvent.id} />
-        ))}
       </div>
     </div>
   );

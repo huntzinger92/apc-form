@@ -25,7 +25,6 @@ import {
 } from "./EventForm.utils";
 
 // cleanup - readme, icon in browser, figure out how to get table in process.env
-// create routing - auth check on landing page, redirect to login (routed) if not auth'd, redirect to landing page on login
 // how to show instant changes in UI after post request success
 
 // apply to real eventLibrary table!
@@ -161,7 +160,7 @@ export const EventForm = ({
 
   return (
     <>
-      <ToastContainer autoClose={4000} />
+      <ToastContainer autoClose={3000} />
       <Accordion sx={styles.accordionBackgroundColor}>
         <AccordionSummary>
           <div style={styles.accordionHeaderStyle}>

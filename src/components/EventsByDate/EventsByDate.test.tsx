@@ -63,4 +63,11 @@ describe("EventsByDate", () => {
       await screen.findByText("Error while fetching events: message")
     ).toBeInTheDocument();
   });
+  it("tells user that no events found when no events found", () => {
+    mockLikeFilter.mockImplementation(() => ({
+      data: [],
+    }));
+    render(<EventsByDate />);
+    expect(screen.getByText("No events found!")).toBeInTheDocument();
+  });
 });

@@ -9,8 +9,6 @@ export const queryEventsByDateContainer = {
 export const dateInput = { maxWidth: "300px" };
 
 export const eventFormsContainer = {
-  width: "80%",
-  margin: "auto",
   display: "flex",
   flexDirection: "column" as "column",
   gap: "20px",

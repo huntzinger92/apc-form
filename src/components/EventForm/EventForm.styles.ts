@@ -41,6 +41,7 @@ export const accordionHeaderStyle = {
 
 export const accordionBackgroundColor = {
   backgroundColor: secondaryBlack,
+  width: "100%",
   ...primaryTextColor,
 };
 
