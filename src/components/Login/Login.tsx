@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { StyledButton } from "../StyledButton/StyledButton";
 import { StyledTextField } from "../../StyledTextField";
@@ -31,7 +31,6 @@ export const Login = () => {
   };
   return (
     <div style={styles.loginContainer}>
-      <ToastContainer autoClose={3000} />
       <StyledTextField
         label="Username"
         onChange={(e) => setUsername(e.target.value)}

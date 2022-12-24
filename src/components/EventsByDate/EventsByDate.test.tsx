@@ -1,4 +1,5 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
+import { render } from "../../testUtils/renderWithProviders";
 import { IEvent } from "../../types";
 import { EventsByDate } from "./EventsByDate";
 

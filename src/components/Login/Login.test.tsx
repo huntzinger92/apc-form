@@ -1,8 +1,7 @@
-import { BrowserRouter as Router } from "react-router-dom";
-import { render, screen, waitFor } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { render } from "../../testUtils/renderWithProviders";
 import { Login } from "./Login";
-import { ReactNode } from "react";
 
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
@@ -23,8 +22,6 @@ describe("Login", () => {
     .supabase.auth.signInWithPassword;
   const mockUseNavigate = jest.requireMock("react-router-dom").useNavigate;
   const mockNavigate = jest.fn();
-  const renderWithRouter = (component: ReactNode) =>
-    render(<Router>{component}</Router>);
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -33,23 +30,23 @@ describe("Login", () => {
   });
   const inputLabels = ["Username", "Password"];
   it.each(inputLabels)("renders expected labels", (inputLabel) => {
-    renderWithRouter(<Login />);
+    render(<Login />);
     expect(screen.getAllByText(inputLabel)).toHaveLength(2);
   });
   it("renders login button", () => {
-    renderWithRouter(<Login />);
+    render(<Login />);
     expect(screen.getByText("Login")).toBeInTheDocument();
   });
   describe("login success behavior", () => {
     it("clicking login button adds success toast", async () => {
-      renderWithRouter(<Login />);
+      render(<Login />);
       userEvent.click(screen.getByText("Login"));
       expect(
         await screen.findByText("Successfully logged in!")
       ).toBeInTheDocument();
     });
     it("clicking login button calls login api with expected params", async () => {
-      renderWithRouter(<Login />);
+      render(<Login />);
       userEvent.type(screen.getByLabelText("Username"), "email");
       userEvent.type(screen.getByLabelText("Password"), "password");
       userEvent.click(screen.getByText("Login"));
@@ -59,7 +56,7 @@ describe("Login", () => {
       });
     });
     it("redirects user back to homepage on login success", async () => {
-      renderWithRouter(<Login />);
+      render(<Login />);
       userEvent.click(screen.getByText("Login"));
       await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith("/"));
     });
@@ -71,7 +68,7 @@ describe("Login", () => {
       }));
     });
     it("clicking login button adds error toast", async () => {
-      renderWithRouter(<Login />);
+      render(<Login />);
       userEvent.click(screen.getByText("Login"));
       expect(
         await screen.findByText(

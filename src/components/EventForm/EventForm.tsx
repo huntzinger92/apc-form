@@ -6,7 +6,7 @@ import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import { ChangeEvent, useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { v4 as uuidv4 } from "uuid";
 import { stringToSlug } from "../../stringToSlug";
@@ -159,109 +159,106 @@ export const EventForm = ({
     newDescription;
 
   return (
-    <>
-      <ToastContainer autoClose={3000} />
-      <Accordion sx={styles.accordionBackgroundColor}>
-        <AccordionSummary>
-          <div style={styles.accordionHeaderStyle}>
-            <Typography>{title || "New Event"}</Typography>
-            {!isEditMode && (
-              <DeleteIcon
-                onClick={collapseAddForm}
-                data-testid="discard-event-icon"
-                sx={styles.discardEventIcon}
-              />
-            )}
-          </div>
-        </AccordionSummary>
-        <AccordionDetails>
-          <div style={styles.formContainer}>
-            <div style={styles.firstFormRow}>
-              <StyledTextField
-                required
-                error={!newTitle}
-                label="Title"
-                placeholder="Title"
-                value={newTitle}
-                onChange={(e) => setNewTitle(e.target.value)}
-              />
-              <StyledTextField
-                required
-                error={!newDate}
-                label="Date"
-                placeholder="Date"
-                type="date"
-                value={formattedDate}
-                onChange={handleNewDate}
-              />
-              <StyledTextField
-                required
-                error={!newCategory}
-                label="Category"
-                placeholder="Category"
-                value={newCategory}
-                onChange={(e) => setNewCategory(e.target.value)}
-              />
-            </div>
-            <div style={styles.secondFormRow}>
-              <StyledTextField
-                label="Image Source (storage reference)"
-                placeholder="Event/someImg.jpg"
-                value={newImgSrc}
-                onChange={(e) => setNewImgSrc(e.target.value)}
-              />
-              <StyledTextField
-                multiline
-                label="Image Caption"
-                placeholder="Image Caption"
-                value={newImgAltText}
-                onChange={(e) => setNewImgAltText(e.target.value)}
-              />
-              <FormControlLabel
-                control={<Checkbox value={NSFW} sx={primaryTextColor} />}
-                label="NSFW"
-                onChange={() => setNewNSFW(!newNSFW)}
-              />
-            </div>
+    <Accordion sx={styles.accordionBackgroundColor}>
+      <AccordionSummary>
+        <div style={styles.accordionHeaderStyle}>
+          <Typography>{title || "New Event"}</Typography>
+          {!isEditMode && (
+            <DeleteIcon
+              onClick={collapseAddForm}
+              data-testid="discard-event-icon"
+              sx={styles.discardEventIcon}
+            />
+          )}
+        </div>
+      </AccordionSummary>
+      <AccordionDetails>
+        <div style={styles.formContainer}>
+          <div style={styles.firstFormRow}>
             <StyledTextField
               required
-              multiline
-              error={!otdValid}
-              label="On this day statement (social media title)"
-              placeholder="On this day..."
-              value={newOtd}
-              onChange={(e) => setNewOtd(e.target.value)}
+              error={!newTitle}
+              label="Title"
+              placeholder="Title"
+              value={newTitle}
+              onChange={(e) => setNewTitle(e.target.value)}
             />
             <StyledTextField
               required
-              multiline
-              error={!newDescription}
-              label="Description"
-              placeholder="Description"
-              value={newDescription}
-              onChange={(e) => setNewDescription(e.target.value)}
-              rows={9}
+              error={!newDate}
+              label="Date"
+              placeholder="Date"
+              type="date"
+              value={formattedDate}
+              onChange={handleNewDate}
             />
-            <SourcesInputs
-              setNewSources={setNewSources}
-              newSources={newSources}
-              originalSources={originalSources}
+            <StyledTextField
+              required
+              error={!newCategory}
+              label="Category"
+              placeholder="Category"
+              value={newCategory}
+              onChange={(e) => setNewCategory(e.target.value)}
             />
-            <div>
-              <StyledButton
-                variant="contained"
-                sx={styles.buttonStyle}
-                onClick={handleSubmit}
-                disabled={!formValid || loading}
-                type="button"
-              >
-                {`${isEditMode ? "Update" : "Add"}`}
-              </StyledButton>
-              {isEditMode && <DeleteButton id={id} loading={loading} />}
-            </div>
           </div>
-        </AccordionDetails>
-      </Accordion>
-    </>
+          <div style={styles.secondFormRow}>
+            <StyledTextField
+              label="Image Source (storage reference)"
+              placeholder="Event/someImg.jpg"
+              value={newImgSrc}
+              onChange={(e) => setNewImgSrc(e.target.value)}
+            />
+            <StyledTextField
+              multiline
+              label="Image Caption"
+              placeholder="Image Caption"
+              value={newImgAltText}
+              onChange={(e) => setNewImgAltText(e.target.value)}
+            />
+            <FormControlLabel
+              control={<Checkbox value={NSFW} sx={primaryTextColor} />}
+              label="NSFW"
+              onChange={() => setNewNSFW(!newNSFW)}
+            />
+          </div>
+          <StyledTextField
+            required
+            multiline
+            error={!otdValid}
+            label="On this day statement (social media title)"
+            placeholder="On this day..."
+            value={newOtd}
+            onChange={(e) => setNewOtd(e.target.value)}
+          />
+          <StyledTextField
+            required
+            multiline
+            error={!newDescription}
+            label="Description"
+            placeholder="Description"
+            value={newDescription}
+            onChange={(e) => setNewDescription(e.target.value)}
+            rows={9}
+          />
+          <SourcesInputs
+            setNewSources={setNewSources}
+            newSources={newSources}
+            originalSources={originalSources}
+          />
+          <div>
+            <StyledButton
+              variant="contained"
+              sx={styles.buttonStyle}
+              onClick={handleSubmit}
+              disabled={!formValid || loading}
+              type="button"
+            >
+              {`${isEditMode ? "Update" : "Add"}`}
+            </StyledButton>
+            {isEditMode && <DeleteButton id={id} loading={loading} />}
+          </div>
+        </div>
+      </AccordionDetails>
+    </Accordion>
   );
 };

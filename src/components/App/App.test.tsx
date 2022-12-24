@@ -1,7 +1,6 @@
-import { BrowserRouter as Router } from "react-router-dom";
-import { render, screen, waitFor } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import App from "./App";
-import { ReactNode } from "react";
+import { render } from "../../testUtils/renderWithProviders";
 
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
@@ -32,8 +31,6 @@ describe("App", () => {
     .supabase.auth.getUser;
   const mockUseNavigate = jest.requireMock("react-router-dom").useNavigate;
   const mockNavigate = jest.fn();
-  const renderWithRouter = (component: ReactNode) =>
-    render(<Router>{component}</Router>);
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -41,15 +38,15 @@ describe("App", () => {
     mockUseNavigate.mockImplementation(() => mockNavigate);
   });
   it("renders App header", () => {
-    renderWithRouter(<App />);
+    render(<App />);
     expect(screen.getByText("aPC Events Updater 9000")).toBeInTheDocument();
   });
   it("renders loading spinner by default", () => {
-    renderWithRouter(<App />);
+    render(<App />);
     expect(screen.getByTestId("auth-loading-spinner")).toBeInTheDocument();
   });
   it("removes loading spinner after auth check finishes", async () => {
-    renderWithRouter(<App />);
+    render(<App />);
     await waitFor(() =>
       expect(
         screen.queryByTestId("auth-loading-spinner")
@@ -58,7 +55,7 @@ describe("App", () => {
   });
   it("calls navigation with login path if auth check fails", async () => {
     mockGetUser.mockImplementation(() => ({ user: undefined }));
-    renderWithRouter(<App />);
+    render(<App />);
     await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith("login"));
   });
 });

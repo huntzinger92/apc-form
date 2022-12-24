@@ -1,7 +1,7 @@
 import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
 import { ChangeEvent, useEffect, useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { EventForm } from "../EventForm/EventForm";
 import { StyledTextField } from "../../StyledTextField";
 import { supabase } from "../../supabaseClient";
@@ -39,7 +39,6 @@ export const EventsByDate = () => {
   };
   return (
     <div>
-      <ToastContainer autoClose={3000} />
       <div style={styles.queryEventsByDateContainer}>
         <Typography variant="h6">Query Existing Events</Typography>
         <StyledTextField
