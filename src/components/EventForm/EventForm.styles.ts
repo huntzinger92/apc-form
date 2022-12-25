@@ -28,7 +28,7 @@ export const buttonStyle = {
   marginBottom: "15px",
 };
 
-export const deleteButtonStyle = {
+export const rightButtonStyle = {
   ...buttonStyle,
   marginLeft: "15px",
 };

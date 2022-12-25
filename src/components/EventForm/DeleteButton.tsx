@@ -28,7 +28,7 @@ export const DeleteButton = ({ id, loading }: IDeleteButtonProps) => {
   return (
     <StyledButton
       variant="contained"
-      sx={styles.deleteButtonStyle}
+      sx={styles.rightButtonStyle}
       onClick={handleDelete}
       type="button"
       disabled={loading}

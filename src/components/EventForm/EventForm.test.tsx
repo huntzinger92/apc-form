@@ -138,22 +138,14 @@ describe("EventForm", () => {
     const addProps = {
       collapseAddForm: mockAddFormCallback,
     };
-    it("shows add button in add mode", () => {
+    const addModeButtons = ["Save", "Discard"];
+    it.each(addModeButtons)("shows add mode buttons", (addModeButton) => {
       render(<EventForm {...addProps} />);
-      expect(screen.getByText("Save")).toBeInTheDocument();
+      expect(screen.getByText(addModeButton)).toBeInTheDocument();
     });
     it("does NOT show delete button in add mode", () => {
       render(<EventForm {...addProps} />);
       expect(screen.queryByText("Delete")).not.toBeInTheDocument();
-    });
-    it("shows discard event icon in add mode", () => {
-      render(<EventForm {...addProps} />);
-      expect(screen.getByTestId("discard-event-icon")).toBeInTheDocument();
-    });
-    it("clicking discard event icon calls collapseAddForm", () => {
-      render(<EventForm {...addProps} />);
-      userEvent.click(screen.getByTestId("discard-event-icon"));
-      expect(mockAddFormCallback).toHaveBeenCalledTimes(1);
     });
     it("add event button disabled by default", () => {
       render(<EventForm {...addProps} />);

@@ -1,5 +1,5 @@
 import Checkbox from "@mui/material/Checkbox";
-import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Typography from "@mui/material/Typography";
 import Accordion from "@mui/material/Accordion";
@@ -16,21 +16,18 @@ import * as styles from "./EventForm.styles";
 import { SourcesInputs } from "../../SourcesInputs";
 import { StyledTextField } from "../../StyledTextField";
 import { primaryTextColor } from "../../globalStyles";
-import { StyledButton } from "../StyledButton/StyledButton";
-import { DeleteButton } from "./DeleteButton";
 import {
   getDefaultDate,
   rawDbSourcesToArray,
   sourcesArrayToDbString,
 } from "./EventForm.utils";
+import { Footer } from "./Footer";
 
 // cleanup - readme, icon in browser, figure out how to get table in process.env
 // track selected date in state and use refetch callback on success
-// have two buttons on both edit and add - on add "Save" and "Discard"
 // unmount new event form when discard is clicked (fixes display bug)
 // only show errors on add form after user has touched (dirty input)
 // make sources icons tabbable?
-// add edit icon on right corner
 // investigate mui's date picker icon color
 
 // apply to real eventLibrary table!
@@ -156,26 +153,21 @@ export const EventForm = ({
 
   const otdValid =
     newOtd && newOtd.match(/on this day/i) && newOtd.length < 246;
-  const formValid =
+  const formValid = Boolean(
     otdValid &&
-    newSources?.[0] &&
-    newTitle &&
-    newDate &&
-    newCategory &&
-    newDescription;
+      newSources?.[0] &&
+      newTitle &&
+      newDate &&
+      newCategory &&
+      newDescription
+  );
 
   return (
     <Accordion sx={styles.accordionBackgroundColor}>
       <AccordionSummary>
         <div style={styles.accordionHeaderStyle}>
           <Typography>{title || "New Event"}</Typography>
-          {!isEditMode && (
-            <DeleteIcon
-              onClick={collapseAddForm}
-              data-testid="discard-event-icon"
-              sx={styles.discardEventIcon}
-            />
-          )}
+          <EditIcon sx={styles.discardEventIcon} />
         </div>
       </AccordionSummary>
       <AccordionDetails>
@@ -251,18 +243,14 @@ export const EventForm = ({
             newSources={newSources}
             originalSources={originalSources}
           />
-          <div>
-            <StyledButton
-              variant="contained"
-              sx={styles.buttonStyle}
-              onClick={handleSubmit}
-              disabled={!formValid || loading}
-              type="button"
-            >
-              {`${isEditMode ? "Update" : "Save"}`}
-            </StyledButton>
-            {isEditMode && <DeleteButton id={id} loading={loading} />}
-          </div>
+          <Footer
+            id={id}
+            isEditMode={isEditMode}
+            formValid={formValid}
+            loading={loading}
+            collapseAddForm={collapseAddForm}
+            handleSubmit={handleSubmit}
+          />
         </div>
       </AccordionDetails>
     </Accordion>

@@ -2,7 +2,6 @@ import { useState } from "react";
 import { EventForm } from "../EventForm/EventForm";
 import * as styles from "./AddEvent.styles";
 import { StyledButton } from "../StyledButton/StyledButton";
-import { eventFormsContainer } from "../EventsByDate/EventsByDate.styles";
 
 export const AddEvent = () => {
   const [showAddForm, setShowAddForm] = useState<boolean>(false);
@@ -12,7 +11,7 @@ export const AddEvent = () => {
   };
 
   return (
-    <div style={eventFormsContainer}>
+    <div style={styles.addEventsContainer}>
       {!showAddForm && (
         <div style={styles.addIconWrapper}>
           <StyledButton

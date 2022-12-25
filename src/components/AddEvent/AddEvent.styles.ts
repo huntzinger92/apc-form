@@ -1,3 +1,5 @@
+import { eventFormsContainer } from "../EventsByDate/EventsByDate.styles";
+
 export const addIconWrapper = {
   width: "100%",
   display: "flex",
@@ -15,3 +17,8 @@ export const addTierFormWrapper = (showAddForm: boolean) => ({
   display: !showAddForm ? "none" : "inherit",
   marginBottom: "15px",
 });
+
+export const addEventsContainer = {
+  ...eventFormsContainer,
+  marginTop: "0px",
+};
