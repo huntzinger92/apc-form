@@ -14,15 +14,23 @@ interface IDate {
   day: string;
 }
 
+const getNonZeroPaddedMonthDayFromDateString = (dateString: string) => {
+  let [, month, day] = dateString.split("-");
+  if (month[0] === "0") {
+    month = month.slice(1);
+  }
+  if (day[0] === "0") {
+    day = day.slice(1);
+  }
+  return { month, day };
+};
+
 export const EventsByDate = () => {
   const defaultDate = new Date().toLocaleDateString("en-CA");
-  const [, newMonth, newDay] = defaultDate.split("-");
+  const monthAndDate = getNonZeroPaddedMonthDayFromDateString(defaultDate);
   const tableName = process.env.REACT_APP_SUPABASE_TABLE_NAME as string;
 
-  const [date, setDate] = useState<IDate>({
-    month: newMonth,
-    day: newDay,
-  });
+  const [date, setDate] = useState<IDate>(monthAndDate);
   const [loading, setLoading] = useState<boolean>(false);
   const [dayEvents, setDayEvents] = useState<IEvent[]>([]);
 
@@ -49,11 +57,14 @@ export const EventsByDate = () => {
   }, [fetchEvents]);
 
   const handleNewDate = (e: ChangeEvent<HTMLInputElement>) => {
-    const [, newMonth, newDay] = e.target.value.split("-");
-    setDate({
-      month: newMonth,
-      day: newDay,
-    });
+    // if invalid date input
+    if (!e.target.value) {
+      return;
+    }
+    const formattedMonthAndDate = getNonZeroPaddedMonthDayFromDateString(
+      e.target.value
+    );
+    setDate(formattedMonthAndDate);
   };
 
   return (

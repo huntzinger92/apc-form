@@ -208,6 +208,7 @@ export const EventForm = ({
               placeholder="Image Caption"
               value={newImgAltText}
               onChange={(e) => setNewImgAltText(e.target.value)}
+              fullWidth
             />
             <FormControlLabel
               control={<Checkbox value={NSFW} sx={primaryTextColor} />}
@@ -223,6 +224,7 @@ export const EventForm = ({
             placeholder="On this day..."
             value={newOtd}
             onChange={(e) => setNewOtd(e.target.value)}
+            fullWidth
           />
           <StyledTextField
             required
