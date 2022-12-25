@@ -140,7 +140,7 @@ describe("EventForm", () => {
     };
     it("shows add button in add mode", () => {
       render(<EventForm {...addProps} />);
-      expect(screen.getByText("Add")).toBeInTheDocument();
+      expect(screen.getByText("Save")).toBeInTheDocument();
     });
     it("does NOT show delete button in add mode", () => {
       render(<EventForm {...addProps} />);
@@ -157,7 +157,7 @@ describe("EventForm", () => {
     });
     it("add event button disabled by default", () => {
       render(<EventForm {...addProps} />);
-      expect(screen.getByText("Add")).toBeDisabled();
+      expect(screen.getByText("Save")).toBeDisabled();
     });
     it("renders success toast on insert success", async () => {
       render(<EventForm {...addProps} />);
@@ -174,7 +174,7 @@ describe("EventForm", () => {
         screen.getByPlaceholderText("https://en.wikipedia.org/"),
         "1"
       );
-      userEvent.click(screen.getByText("Add"));
+      userEvent.click(screen.getByText("Save"));
       expect(
         await screen.findByText("Event successfully added!")
       ).toBeInTheDocument();
@@ -194,7 +194,7 @@ describe("EventForm", () => {
         screen.getByPlaceholderText("https://en.wikipedia.org/"),
         "1"
       );
-      userEvent.click(screen.getByText("Add"));
+      userEvent.click(screen.getByText("Save"));
       await waitFor(() => expect(mockAddFormCallback).toHaveBeenCalledTimes(1));
     });
     it("renders error toast on insert error", async () => {
@@ -215,7 +215,7 @@ describe("EventForm", () => {
         screen.getByPlaceholderText("https://en.wikipedia.org/"),
         "1"
       );
-      userEvent.click(screen.getByText("Add"));
+      userEvent.click(screen.getByText("Save"));
       expect(
         await screen.findByText(
           "Error while attempting to add event: apocalypse now"
@@ -240,7 +240,7 @@ describe("EventForm", () => {
         screen.getByPlaceholderText("https://en.wikipedia.org/"),
         "1"
       );
-      userEvent.click(screen.getByText("Add"));
+      userEvent.click(screen.getByText("Save"));
       expect(mockAddFormCallback).toHaveBeenCalledTimes(0);
     });
     it("calls insert api with updated values", async () => {
@@ -261,7 +261,7 @@ describe("EventForm", () => {
         "1"
       );
       userEvent.click(screen.getByLabelText("NSFW"));
-      userEvent.click(screen.getByText("Add"));
+      userEvent.click(screen.getByText("Save"));
       expect(mockInsert).toHaveBeenCalledWith({
         NSFW: true,
         category: "1",

@@ -31,15 +31,17 @@ describe("Login", () => {
   const inputLabels = ["Username", "Password"];
   it.each(inputLabels)("renders expected labels", (inputLabel) => {
     render(<Login />);
-    expect(screen.getAllByText(inputLabel)).toHaveLength(2);
+    expect(screen.getByText(inputLabel)).toBeInTheDocument();
   });
-  it("renders login button", () => {
+  it("login button disabled by default", () => {
     render(<Login />);
-    expect(screen.getByText("Login")).toBeInTheDocument();
+    expect(screen.getByText("Login")).toBeDisabled();
   });
   describe("login success behavior", () => {
     it("clicking login button adds success toast", async () => {
       render(<Login />);
+      userEvent.type(screen.getByTestId("username-input"), "email");
+      userEvent.type(screen.getByTestId("password-input"), "password");
       userEvent.click(screen.getByText("Login"));
       expect(
         await screen.findByText("Successfully logged in!")
@@ -47,8 +49,8 @@ describe("Login", () => {
     });
     it("clicking login button calls login api with expected params", async () => {
       render(<Login />);
-      userEvent.type(screen.getByLabelText("Username"), "email");
-      userEvent.type(screen.getByLabelText("Password"), "password");
+      userEvent.type(screen.getByTestId("username-input"), "email");
+      userEvent.type(screen.getByTestId("password-input"), "password");
       userEvent.click(screen.getByText("Login"));
       expect(mockSignIn).toHaveBeenCalledWith({
         email: "email",
@@ -57,6 +59,8 @@ describe("Login", () => {
     });
     it("redirects user back to homepage on login success", async () => {
       render(<Login />);
+      userEvent.type(screen.getByTestId("username-input"), "email");
+      userEvent.type(screen.getByTestId("password-input"), "password");
       userEvent.click(screen.getByText("Login"));
       await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith("/"));
     });
@@ -69,6 +73,8 @@ describe("Login", () => {
     });
     it("clicking login button adds error toast", async () => {
       render(<Login />);
+      userEvent.type(screen.getByTestId("username-input"), "email");
+      userEvent.type(screen.getByTestId("password-input"), "password");
       userEvent.click(screen.getByText("Login"));
       expect(
         await screen.findByText(

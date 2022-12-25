@@ -38,12 +38,14 @@ export const Login = () => {
         label="Username"
         required
         onChange={(e) => setUsername(e.target.value)}
+        inputProps={{ "data-testid": "username-input" }}
       />
       <StyledTextField
         label="Password"
         type="password"
         required
         onChange={(e) => setPassword(e.target.value)}
+        inputProps={{ "data-testid": "password-input" }}
       />
       <StyledButton
         variant="contained"
