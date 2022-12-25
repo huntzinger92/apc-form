@@ -145,8 +145,7 @@ export const EventForm = ({
     setLoading(false);
   };
 
-  const [month, day, year] = newDate.split("/");
-  const formattedDate = `${year}-${month}-${day}`;
+  const formattedDate = new Date(newDate).toLocaleDateString("en-CA");
 
   const otdValid =
     newOtd && newOtd.match(/on this day/i) && newOtd.length < 246;

@@ -41,7 +41,7 @@ export const EventsByDate = () => {
       .from(tableName)
       .select()
       // mm/dd/ format
-      .like("date", `%${month}/${day}/%`);
+      .like("date", `${month}/${day}/%`);
     const sortedEvents = newDayEvents?.sort((first, second) =>
       first.title < second.title ? -1 : 1
     );
@@ -79,21 +79,25 @@ export const EventsByDate = () => {
         />
       </div>
       <div style={styles.eventFormsContainer}>
-        {dayEvents.map((dayEvent) => (
-          <EventForm
-            dayEvent={dayEvent}
-            key={dayEvent.id}
-            fetchEvents={fetchEvents}
-          />
-        ))}
-        {dayEvents.length === 0 && (
-          <Typography variant="h6">No events found!</Typography>
-        )}
-        <AddEvent fetchEvents={fetchEvents} />
         {loading && (
           <span data-testid="loading-spinner">
             <CircularProgress sx={styles.loadingSpinner} />
           </span>
+        )}
+        {!loading && (
+          <>
+            {dayEvents.map((dayEvent) => (
+              <EventForm
+                dayEvent={dayEvent}
+                key={dayEvent.id}
+                fetchEvents={fetchEvents}
+              />
+            ))}
+            {dayEvents.length === 0 && (
+              <Typography variant="h6">No events found!</Typography>
+            )}
+            <AddEvent fetchEvents={fetchEvents} />
+          </>
         )}
       </div>
     </div>
