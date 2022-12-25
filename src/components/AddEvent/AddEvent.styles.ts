@@ -13,10 +13,9 @@ export const addButtonStyle = {
   marginBottom: "15px",
 };
 
-export const addTierFormWrapper = (showAddForm: boolean) => ({
-  display: !showAddForm ? "none" : "inherit",
+export const addTierFormWrapper = {
   marginBottom: "15px",
-});
+};
 
 export const addEventsContainer = {
   ...eventFormsContainer,

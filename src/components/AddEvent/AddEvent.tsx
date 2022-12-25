@@ -23,9 +23,11 @@ export const AddEvent = () => {
           </StyledButton>
         </div>
       )}
-      <div style={styles.addTierFormWrapper(showAddForm)}>
-        <EventForm collapseAddForm={collapseAddForm} />
-      </div>
+      {showAddForm && (
+        <div style={styles.addTierFormWrapper}>
+          <EventForm collapseAddForm={collapseAddForm} />
+        </div>
+      )}
     </div>
   );
 };
