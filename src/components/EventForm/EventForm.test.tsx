@@ -11,12 +11,17 @@ jest.mock("../../supabaseClient", () => ({
 }));
 
 describe("EventForm", () => {
+  const mockFetchEvents = jest.fn();
+  const defaultProps = { fetchEvents: mockFetchEvents };
   const mockFrom = jest.requireMock("../../supabaseClient").supabase.from;
-  const mockEqFilter = jest.fn(() => ({}));
-  const mockUpdate = jest.fn(() => ({ eq: mockEqFilter }));
+  const mockEqFilter = jest.fn();
+  const mockUpdate = jest.fn();
   const mockInsert = jest.fn(() => ({}));
   beforeEach(() => {
     jest.clearAllMocks();
+    mockEqFilter.mockImplementation(() => ({}));
+    mockUpdate.mockImplementation(() => ({ eq: mockEqFilter }));
+    mockInsert.mockImplementation(() => ({}));
     mockFrom.mockImplementation(() => ({
       update: mockUpdate,
       insert: mockInsert,
@@ -30,16 +35,17 @@ describe("EventForm", () => {
     "Description",
   ];
   it.each(inputLabels)("renders expected input labels", (inputLabel) => {
-    render(<EventForm />);
+    render(<EventForm {...defaultProps} />);
     expect(screen.getByText(inputLabel)).toBeInTheDocument();
   });
   const imageLabels = ["Image Source (storage reference)", "Image Caption"];
   it.each(imageLabels)("renders expected image labels", (imageLabel) => {
-    render(<EventForm />);
+    render(<EventForm {...defaultProps} />);
     expect(screen.getAllByText(imageLabel)).toHaveLength(2);
   });
   describe("edit mode behavior", () => {
     const editProps = {
+      fetchEvents: mockFetchEvents,
       dayEvent: {
         id: "eventId",
         title: "testTitle",
@@ -132,10 +138,16 @@ describe("EventForm", () => {
         title: "testTitle1",
       });
     });
+    it("refetches events on update success", async () => {
+      render(<EventForm {...editProps} />);
+      userEvent.click(screen.getByText("Update"));
+      await waitFor(() => expect(mockFetchEvents).toHaveBeenCalledTimes(1));
+    });
   });
   describe("add mode behavior", () => {
     const mockAddFormCallback = jest.fn();
     const addProps = {
+      fetchEvents: mockFetchEvents,
       collapseAddForm: mockAddFormCallback,
     };
     const addModeButtons = ["Save", "Discard"];
@@ -267,6 +279,23 @@ describe("EventForm", () => {
         sources: "['1']",
         title: "1",
       });
+    });
+    it("refetches events on insert success", async () => {
+      render(<EventForm {...addProps} />);
+      userEvent.type(screen.getByPlaceholderText("Title"), "1");
+      userEvent.type(screen.getByPlaceholderText("Category"), "1");
+      userEvent.type(
+        screen.getByPlaceholderText("On this day..."),
+        "On this day"
+      );
+      userEvent.type(screen.getByPlaceholderText("Description"), "1");
+      userEvent.click(screen.getByTestId("add-source-icon"));
+      userEvent.type(
+        screen.getByPlaceholderText("https://en.wikipedia.org/"),
+        "1"
+      );
+      userEvent.click(screen.getByText("Save"));
+      await waitFor(() => expect(mockFetchEvents).toHaveBeenCalledTimes(1));
     });
   });
 });

@@ -3,7 +3,7 @@ import { EventForm } from "../EventForm/EventForm";
 import * as styles from "./AddEvent.styles";
 import { StyledButton } from "../StyledButton/StyledButton";
 
-export const AddEvent = () => {
+export const AddEvent = ({ fetchEvents }: { fetchEvents: () => void }) => {
   const [showAddForm, setShowAddForm] = useState<boolean>(false);
 
   const collapseAddForm = () => {
@@ -25,7 +25,10 @@ export const AddEvent = () => {
       )}
       {showAddForm && (
         <div style={styles.addTierFormWrapper}>
-          <EventForm collapseAddForm={collapseAddForm} />
+          <EventForm
+            fetchEvents={fetchEvents}
+            collapseAddForm={collapseAddForm}
+          />
         </div>
       )}
     </div>

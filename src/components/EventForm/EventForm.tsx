@@ -24,8 +24,6 @@ import {
 import { Footer } from "./Footer";
 
 // cleanup - readme, icon in browser, figure out how to get table in process.env
-// track selected date in state and use refetch callback on success
-// unmount new event form when discard is clicked (fixes display bug)
 // only show errors on add form after user has touched (dirty input)
 // make sources icons tabbable?
 // investigate mui's date picker icon color
@@ -39,9 +37,11 @@ import { Footer } from "./Footer";
 // - deploy so you don't have to use locally on your laptop
 
 export const EventForm = ({
-  dayEvent,
   collapseAddForm,
+  dayEvent,
+  fetchEvents,
 }: {
+  fetchEvents: () => void;
   dayEvent?: IEvent;
   collapseAddForm?: () => void;
 }) => {
@@ -107,16 +107,16 @@ export const EventForm = ({
         sources: formattedSources,
       })
       .eq("id", id);
-    error
-      ? toast.error(
-          `Error while attempting to update event: ${error.message}`,
-          {
-            position: toast.POSITION.TOP_RIGHT,
-          }
-        )
-      : toast.success("Event successfully updated!", {
-          position: toast.POSITION.TOP_RIGHT,
-        });
+    if (error) {
+      toast.error(`Error while attempting to update event: ${error.message}`, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    } else {
+      fetchEvents();
+      toast.success("Event successfully updated!", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
     setLoading(false);
   };
 
@@ -143,6 +143,7 @@ export const EventForm = ({
       toast.success("Event successfully added!", {
         position: toast.POSITION.TOP_RIGHT,
       });
+      fetchEvents();
       collapseAddForm?.();
     }
     setLoading(false);
@@ -250,6 +251,7 @@ export const EventForm = ({
             loading={loading}
             collapseAddForm={collapseAddForm}
             handleSubmit={handleSubmit}
+            fetchEvents={fetchEvents}
           />
         </div>
       </AccordionDetails>

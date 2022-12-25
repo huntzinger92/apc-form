@@ -9,6 +9,7 @@ export interface IFooterProps {
   id: string;
   collapseAddForm?: () => void;
   handleSubmit: () => void;
+  fetchEvents: () => void;
 }
 
 export const Footer = ({
@@ -18,6 +19,7 @@ export const Footer = ({
   loading,
   collapseAddForm,
   handleSubmit,
+  fetchEvents,
 }: IFooterProps) => {
   return (
     <div>
@@ -41,7 +43,9 @@ export const Footer = ({
           Discard
         </StyledButton>
       )}
-      {isEditMode && <DeleteButton id={id} loading={loading} />}
+      {isEditMode && (
+        <DeleteButton id={id} loading={loading} fetchEvents={fetchEvents} />
+      )}
     </div>
   );
 };
