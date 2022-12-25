@@ -2,7 +2,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { StyledButton } from "../StyledButton/StyledButton";
-import { StyledTextField } from "../../StyledTextField";
+import { StyledTextField } from "../StyledTextField/StyledTextField";
 import { supabase } from "../../supabaseClient";
 import * as styles from "./Login.styles";
 import { useNavigate } from "react-router-dom";

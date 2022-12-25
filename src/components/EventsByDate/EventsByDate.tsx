@@ -3,7 +3,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { EventForm } from "../EventForm/EventForm";
-import { StyledTextField } from "../../StyledTextField";
+import { StyledTextField } from "../StyledTextField/StyledTextField";
 import { supabase } from "../../supabaseClient";
 import { IEvent } from "../../types";
 import * as styles from "./EventsByDate.styles";

@@ -3,7 +3,8 @@ import {
   primaryBlue,
   primaryBlueHover,
   primaryTextColor,
-} from "./globalStyles";
+} from "../../globalStyles";
+import "./styledTextField.css";
 
 export const StyledTextField = (props: TextFieldProps) => {
   let sx = {

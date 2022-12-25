@@ -13,8 +13,8 @@ import { stringToSlug } from "../../stringToSlug";
 import { supabase } from "../../supabaseClient";
 import { IEvent } from "../../types";
 import * as styles from "./EventForm.styles";
-import { SourcesInputs } from "../../SourcesInputs";
-import { StyledTextField } from "../../StyledTextField";
+import { SourcesInputs } from "../SourcesInputs/SourcesInputs";
+import { StyledTextField } from "../StyledTextField/StyledTextField";
 import { primaryTextColor } from "../../globalStyles";
 import {
   getDefaultDate,
@@ -26,7 +26,6 @@ import { Footer } from "./Footer";
 // cleanup - readme, icon in browser, figure out how to get table in process.env
 // only show errors on add form after user has touched (dirty input)
 // make sources icons tabbable?
-// investigate mui's date picker icon color
 
 // apply to real eventLibrary table!
 

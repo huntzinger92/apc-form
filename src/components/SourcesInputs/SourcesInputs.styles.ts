@@ -1,4 +1,4 @@
-import { primaryBlueHover, primaryTextColor } from "./globalStyles";
+import { primaryBlueHover, primaryTextColor } from "../../globalStyles";
 
 export const sourceInputsContainer = {
   display: "flex",
