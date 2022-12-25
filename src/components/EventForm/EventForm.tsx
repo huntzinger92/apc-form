@@ -27,6 +27,7 @@ import { Footer } from "./Footer";
 
 // nice to haves:
 // - search by term instead of day
+// - validate that storage reference is correct (click button that looks up storage reference and shows checkmark if true)
 // - display image
 // - upload image from website to supabase so you don't have to go into supabase to change image
 // - deploy so you don't have to use locally on your laptop

@@ -6,7 +6,7 @@ This is a React app that handles creating, updating, and deleting events from th
 
 This project is intended to be an "internal" only tool, to greatly expedite the process of keeping our database up to date. That being said, this work could serve as the basis of allowing in-website edits in the future.
 
-# How to Use It
+## How to Use It
 
 To use this app, you will need to setup the env file with the correct supabase project url, api key, and table name, like so:
 
