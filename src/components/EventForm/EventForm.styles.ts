@@ -51,3 +51,10 @@ export const discardEventIcon = {
     color: primaryBlueHover,
   },
 };
+
+export const deleteModalButtonsStyle = {
+  display: "flex",
+  justifyContent: "flex-start",
+  marginTop: "15px",
+  gap: "15px",
+};

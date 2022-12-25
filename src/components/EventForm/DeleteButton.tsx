@@ -1,3 +1,7 @@
+import Dialog from "@mui/material/Dialog";
+import DialogContent from "@mui/material/DialogContent";
+import Typography from "@mui/material/Typography";
+import { useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { StyledButton } from "../StyledButton/StyledButton";
@@ -15,9 +19,12 @@ export const DeleteButton = ({
   loading,
   fetchEvents,
 }: IDeleteButtonProps) => {
+  const [open, setOpen] = useState<boolean>(false);
+
   const tablename = "eventLibrary_test";
   const handleDelete = async () => {
     const { error } = await supabase.from(tablename).delete().eq("id", id);
+    handleClose();
     if (error) {
       toast.error(`Error while attempting to delete event: ${error.message}`, {
         position: toast.POSITION.TOP_RIGHT,
@@ -30,15 +37,44 @@ export const DeleteButton = ({
     }
   };
 
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
-    <StyledButton
-      variant="contained"
-      sx={styles.rightButtonStyle}
-      onClick={handleDelete}
-      type="button"
-      disabled={loading}
-    >
-      Delete
-    </StyledButton>
+    <>
+      <Dialog open={open}>
+        <DialogContent>
+          <Typography>
+            This action cannot be undone. Are you sure you want to delete this
+            event?
+          </Typography>
+          <div
+            style={styles.deleteModalButtonsStyle}
+            data-testid="delete-modal-buttons"
+          >
+            <StyledButton variant="contained" onClick={handleDelete}>
+              Delete
+            </StyledButton>
+            <StyledButton variant="contained" onClick={handleClose}>
+              Cancel
+            </StyledButton>
+          </div>
+        </DialogContent>
+      </Dialog>
+      <StyledButton
+        variant="contained"
+        sx={styles.rightButtonStyle}
+        onClick={handleOpen}
+        type="button"
+        disabled={loading}
+      >
+        Delete
+      </StyledButton>
+    </>
   );
 };
