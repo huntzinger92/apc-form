@@ -22,6 +22,7 @@ import {
   sourcesArrayToDbString,
 } from "./EventForm.utils";
 import { Footer } from "./Footer";
+import { ResponsiveInputsContainer } from "./ResponsiveInputsContainer";
 
 // apply to real eventLibrary table!
 
@@ -168,7 +169,7 @@ export const EventForm = ({
       </AccordionSummary>
       <AccordionDetails>
         <div style={styles.formContainer}>
-          <div style={styles.firstFormRow}>
+          <ResponsiveInputsContainer>
             <StyledTextField
               required
               error={!newTitle}
@@ -194,8 +195,6 @@ export const EventForm = ({
               value={newCategory}
               onChange={(e) => setNewCategory(e.target.value)}
             />
-          </div>
-          <div style={styles.secondFormRow}>
             <StyledTextField
               label="Image Source (storage reference)"
               placeholder="Event/someImg.jpg"
@@ -215,7 +214,7 @@ export const EventForm = ({
               label="NSFW"
               onChange={() => setNewNSFW(!newNSFW)}
             />
-          </div>
+          </ResponsiveInputsContainer>
           <StyledTextField
             required
             multiline

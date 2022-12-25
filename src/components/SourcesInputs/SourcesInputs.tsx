@@ -51,7 +51,6 @@ export const SourcesInputs = ({
             key={`${originalSources[index]}-${index}`}
           >
             <StyledTextField
-              sx={styles.inputStyle}
               error={isInputInvalid(index)}
               label={`Source ${index + 1}`}
               placeholder="https://en.wikipedia.org/"

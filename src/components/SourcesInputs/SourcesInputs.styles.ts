@@ -34,7 +34,3 @@ export const addIconStyle = (makeIconRed: boolean) => ({
   },
   color: makeIconRed ? "red" : primaryTextColor.color,
 });
-
-export const inputStyle = {
-  width: "300px",
-};
