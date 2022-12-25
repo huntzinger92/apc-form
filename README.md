@@ -1,8 +1,22 @@
 # APC Event Updater
 
-This is a React app that handles creating, updating, and deleting events from the APC event database. It integrates with supabase on the backend.
+## What This Is
 
-This is intended to be an "internal" only tool, to greatly expedite the process of keeping our database up to date. That being said, this work could serve as the basis of allowing in-website edits in the future.
+This is a React app that handles creating, updating, and deleting events from the APC event database. Users can query existing events by date or add new events entirely. The app integrates with supabase on the backend.
+
+This project is intended to be an "internal" only tool, to greatly expedite the process of keeping our database up to date. That being said, this work could serve as the basis of allowing in-website edits in the future.
+
+# How to Use It
+
+To use this app, you will need to setup the env file with the correct supabase project url, api key, and table name, like so:
+
+```
+REACT_APP_SUPABASE_URL=https://stahmaxffcqankienulh.supabase.co
+REACT_APP_SUPABASE_ANON_KEY=some_api_key
+REACT_APP_SUPABASE_TABLE_NAME=table_name_here
+```
+
+You will also need an account to login. This app does not handle the creation of new accounts. You will need to contact the owner of this repository to set one up.
 
 ## Available Scripts
 
