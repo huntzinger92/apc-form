@@ -21,9 +21,9 @@ export const DeleteButton = ({
 }: IDeleteButtonProps) => {
   const [open, setOpen] = useState<boolean>(false);
 
-  const tablename = "eventLibrary_test";
+  const tableName = process.env.REACT_APP_SUPABASE_TABLE_NAME as string;
   const handleDelete = async () => {
-    const { error } = await supabase.from(tablename).delete().eq("id", id);
+    const { error } = await supabase.from(tableName).delete().eq("id", id);
     handleClose();
     if (error) {
       toast.error(`Error while attempting to delete event: ${error.message}`, {

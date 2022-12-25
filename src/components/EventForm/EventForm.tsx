@@ -23,10 +23,6 @@ import {
 } from "./EventForm.utils";
 import { Footer } from "./Footer";
 
-// cleanup - readme, icon in browser, figure out how to get table in process.env
-// only show errors on add form after user has touched (dirty input)
-// make sources icons tabbable?
-
 // apply to real eventLibrary table!
 
 // nice to haves:
@@ -73,7 +69,7 @@ export const EventForm = ({
   const [newDescription, setNewDescription] = useState(description);
   const [newSources, setNewSources] = useState<string[]>(originalSources);
 
-  const tableName = "eventLibrary_test";
+  const tableName = process.env.REACT_APP_SUPABASE_TABLE_NAME as string;
 
   const handleNewDate = (e: ChangeEvent<HTMLInputElement>) => {
     const [newYear, newMonth, newDay] = e.target.value.split("-");

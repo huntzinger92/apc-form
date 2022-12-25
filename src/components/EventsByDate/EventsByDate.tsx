@@ -17,6 +17,7 @@ interface IDate {
 export const EventsByDate = () => {
   const defaultDate = new Date().toLocaleDateString("en-CA");
   const [, newMonth, newDay] = defaultDate.split("-");
+  const tableName = process.env.REACT_APP_SUPABASE_TABLE_NAME as string;
 
   const [date, setDate] = useState<IDate>({
     month: newMonth,
@@ -29,7 +30,7 @@ export const EventsByDate = () => {
     const { month, day } = date;
     setLoading(true);
     const { data: newDayEvents, error } = await supabase
-      .from("eventLibrary_test")
+      .from(tableName)
       .select()
       // mm/dd/ format
       .like("date", `%${month}/${day}/%`);
@@ -41,7 +42,7 @@ export const EventsByDate = () => {
     if (error) {
       toast.error(`Error while fetching events: ${error.message}`);
     }
-  }, [date]);
+  }, [date, tableName]);
 
   useEffect(() => {
     fetchEvents();
