@@ -1,6 +1,7 @@
 import Typography from "@mui/material/Typography";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
+import IconButton from "@mui/material/IconButton";
 import * as styles from "./SourcesInputs.styles";
 import { StyledTextField } from "../StyledTextField/StyledTextField";
 
@@ -57,18 +58,22 @@ export const SourcesInputs = ({
               value={source}
               onChange={(e) => handleNewSource(e.target.value, index)}
             />
-            <DeleteIcon
+            <IconButton
               sx={styles.iconStyle}
               onClick={() => handleDeleteSource(index)}
-            />
+            >
+              <DeleteIcon />
+            </IconButton>
           </div>
         ))}
         <div style={styles.inputRow}>
-          <AddIcon
+          <IconButton
             sx={styles.addIconStyle(makeAddIconRed)}
             onClick={handleAddSource}
             data-testid="add-source-icon"
-          />
+          >
+            <AddIcon />
+          </IconButton>
         </div>
       </div>
     </div>
