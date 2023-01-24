@@ -65,7 +65,13 @@ export const EventForm = ({
   const tableName = process.env.REACT_APP_SUPABASE_TABLE_NAME as string;
 
   const handleNewDate = (e: ChangeEvent<HTMLInputElement>) => {
-    const [newYear, newMonth, newDay] = e.target.value.split("-");
+    let [newYear, newMonth, newDay] = e.target.value.split("-");
+    if (newMonth[0] === "0") {
+      newMonth = newMonth.slice(1);
+    }
+    if (newDay[0] === "0") {
+      newDay = newDay.slice(1);
+    }
     setNewDate(`${newMonth}/${newDay}/${newYear}`);
   };
 
@@ -201,7 +207,7 @@ export const EventForm = ({
               fullWidth
             />
             <FormControlLabel
-              control={<Checkbox value={NSFW} sx={primaryTextColor} />}
+              control={<Checkbox checked={newNSFW} sx={primaryTextColor} />}
               label="NSFW"
               onChange={() => setNewNSFW(!newNSFW)}
             />
