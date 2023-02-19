@@ -18,14 +18,14 @@ describe("EventsByDate", () => {
       title: "Title 1",
       description: "Description 1",
       otd: "On this day 1",
-      sources: "[]",
+      links: [],
     },
     {
       id: "2",
       title: "Title 2",
       description: "Description 2",
       otd: "On this day 2",
-      sources: "[]",
+      links: [],
     },
   ];
   const mockLikeFilter = jest.fn(() => ({ data: mockEvents }));

@@ -23,6 +23,15 @@ export const StyledTextField = (props: TextFieldProps) => {
         borderColor: primaryBlue,
       },
     },
+    "& .MuiChip-label": {
+      color: primaryTextColor,
+    },
+    "& .MuiChip-deleteIcon": {
+      color: primaryTextColor,
+    },
+    "& .MuiSvgIcon-root": {
+      color: primaryTextColor,
+    },
   };
   if (props.sx) {
     sx = { ...sx, ...props.sx };

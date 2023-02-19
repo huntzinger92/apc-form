@@ -26,7 +26,11 @@ const getNonZeroPaddedMonthDayFromDateString = (dateString: string) => {
 };
 
 export const EventsByDate = () => {
-  const defaultDate = new Date().toLocaleDateString("en-CA");
+  const defaultMonth = `${new Date().getMonth() + 1}`;
+  const defaultDay = `${new Date().getDate()}`;
+  const defaultDate = `${new Date().getFullYear()}-${
+    defaultMonth.length === 1 ? `0${defaultMonth}` : defaultMonth
+  }-${defaultDay.length === 1 ? `0${defaultDay}` : defaultDay}`;
   const monthAndDate = getNonZeroPaddedMonthDayFromDateString(defaultDate);
   const tableName = process.env.REACT_APP_SUPABASE_TABLE_NAME as string;
 
@@ -40,12 +44,10 @@ export const EventsByDate = () => {
     const { data: newDayEvents, error } = await supabase
       .from(tableName)
       .select()
-      // mm/dd/ format
-      .like("date", `${month}/${day}/%`);
-    const sortedEvents = newDayEvents?.sort((first, second) =>
-      first.title < second.title ? -1 : 1
-    );
-    setDayEvents(sortedEvents ?? []);
+      .eq("day", day)
+      .eq("month", month)
+      .order("title", { ascending: true });
+    setDayEvents(newDayEvents ?? []);
     setLoading(false);
     if (error) {
       toast.error(`Error while fetching events: ${error.message}`);

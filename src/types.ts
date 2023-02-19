@@ -4,16 +4,10 @@ export interface IEvent {
   slugTitle: string;
   date: string;
   otd: string;
-  category:
-    | "Rebellion"
-    | "Revolution"
-    | "Labor"
-    | "Other"
-    | "Birthdays"
-    | "Assassinations";
   description: string;
   NSFW: boolean;
-  sources: string;
+  links: string[];
+  tags: string[];
   imgSrc?: string;
   imgAltText?: string;
 }
