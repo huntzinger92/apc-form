@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
+import AutoComplete from "@mui/material/Autocomplete";
 import { ChangeEvent, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -16,13 +17,10 @@ import * as styles from "./EventForm.styles";
 import { SourcesInputs } from "../SourcesInputs/SourcesInputs";
 import { StyledTextField } from "../StyledTextField/StyledTextField";
 import { primaryTextColor } from "../../globalStyles";
-import {
-  getDefaultDate,
-  rawDbSourcesToArray,
-  sourcesArrayToDbString,
-} from "./EventForm.utils";
+import { getDefaultDate } from "./EventForm.utils";
 import { Footer } from "./Footer";
 import { ResponsiveInputsContainer } from "./ResponsiveInputsContainer";
+import { allTags } from "./constants";
 
 export const EventForm = ({
   collapseAddForm,
@@ -39,28 +37,25 @@ export const EventForm = ({
     title = "",
     otd = "",
     date = getDefaultDate(),
-    sources = "[]",
+    links = [],
     imgSrc = "",
     imgAltText = "",
     description = "",
-    category = "",
     NSFW = false,
+    tags = [],
   } = dayEvent ?? {};
-
-  // sources is a stringified array, but due to current db formatting, needs single apostrophes replaced with double quotes
-  const originalSources = rawDbSourcesToArray(sources);
 
   const [loading, setLoading] = useState<boolean>(false);
   // form state hooks
   const [newTitle, setNewTitle] = useState(title);
   const [newDate, setNewDate] = useState(date);
-  const [newCategory, setNewCategory] = useState(category);
+  const [newTags, setNewTags] = useState(tags);
   const [newOtd, setNewOtd] = useState(otd);
   const [newImgSrc, setNewImgSrc] = useState(imgSrc);
   const [newImgAltText, setNewImgAltText] = useState<string>(imgAltText);
   const [newNSFW, setNewNSFW] = useState<boolean>(!!NSFW);
   const [newDescription, setNewDescription] = useState(description);
-  const [newSources, setNewSources] = useState<string[]>(originalSources);
+  const [newLinks, setNewLinks] = useState<string[]>(links);
 
   const tableName = process.env.REACT_APP_SUPABASE_TABLE_NAME as string;
 
@@ -85,20 +80,19 @@ export const EventForm = ({
   };
 
   const handleEdit = async () => {
-    const formattedSources = sourcesArrayToDbString(newSources);
     const { error } = await supabase
       .from(tableName)
       .update({
         title: newTitle,
         slugTitle: stringToSlug(newTitle),
         date: newDate,
-        category: newCategory,
+        tags: newTags,
         otd: newOtd,
         imgSrc: newImgSrc,
         imgAltText: newImgAltText,
         NSFW: newNSFW,
         description: newDescription,
-        sources: formattedSources,
+        links: newLinks,
       })
       .eq("id", id);
     if (error) {
@@ -115,19 +109,18 @@ export const EventForm = ({
   };
 
   const handleAdd = async () => {
-    const formattedSources = sourcesArrayToDbString(newSources);
     const { error } = await supabase.from(tableName).insert({
       id,
       title: newTitle,
       slugTitle: stringToSlug(newTitle),
       date: newDate,
-      category: newCategory,
+      tags: newTags,
       otd: newOtd,
       imgSrc: newImgSrc,
       imgAltText: newImgAltText,
       NSFW: newNSFW,
       description: newDescription,
-      sources: formattedSources,
+      links: newLinks,
     });
     if (error) {
       toast.error(`Error while attempting to add event: ${error.message}`, {
@@ -148,12 +141,7 @@ export const EventForm = ({
   const otdValid =
     newOtd && newOtd.match(/on this day/i) && newOtd.length < 246;
   const formValid = Boolean(
-    otdValid &&
-      newSources?.[0] &&
-      newTitle &&
-      newDate &&
-      newCategory &&
-      newDescription
+    otdValid && links[0] && newTitle && newDate && newDescription
   );
 
   return (
@@ -184,13 +172,20 @@ export const EventForm = ({
               value={formattedDate}
               onChange={handleNewDate}
             />
-            <StyledTextField
-              required
-              error={!newCategory}
-              label="Category"
-              placeholder="Category"
-              value={newCategory}
-              onChange={(e) => setNewCategory(e.target.value)}
+            <AutoComplete
+              multiple
+              id="tags"
+              options={allTags}
+              getOptionLabel={(option: string) => option}
+              value={newTags}
+              onChange={(_, value) => setNewTags(value)}
+              renderInput={(params) => (
+                <StyledTextField
+                  {...params}
+                  variant="outlined"
+                  label="Event Tags"
+                />
+              )}
             />
             <StyledTextField
               label="Image Source (storage reference)"
@@ -233,9 +228,9 @@ export const EventForm = ({
             rows={9}
           />
           <SourcesInputs
-            setNewSources={setNewSources}
-            newSources={newSources}
-            originalSources={originalSources}
+            setNewSources={setNewLinks}
+            newSources={newLinks}
+            originalSources={links}
           />
           <Footer
             id={id}
