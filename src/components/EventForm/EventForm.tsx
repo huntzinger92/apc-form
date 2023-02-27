@@ -17,7 +17,7 @@ import * as styles from "./EventForm.styles";
 import { SourcesInputs } from "../SourcesInputs/SourcesInputs";
 import { StyledTextField } from "../StyledTextField/StyledTextField";
 import { primaryTextColor } from "../../globalStyles";
-import { getDefaultDate } from "./EventForm.utils";
+import { formatDateForPicker, getDefaultDate } from "./EventForm.utils";
 import { Footer } from "./Footer";
 import { ResponsiveInputsContainer } from "./ResponsiveInputsContainer";
 import { allTags } from "./constants";
@@ -52,7 +52,7 @@ export const EventForm = ({
   const [newTags, setNewTags] = useState(tags);
   const [newOtd, setNewOtd] = useState(otd);
   const [newImgSrc, setNewImgSrc] = useState(imgSrc);
-  const [newImgAltText, setNewImgAltText] = useState<string>(imgAltText);
+  const [newImgAltText, setNewImgAltText] = useState<string>(imgAltText ?? "");
   const [newNSFW, setNewNSFW] = useState<boolean>(!!NSFW);
   const [newDescription, setNewDescription] = useState(description);
   const [newLinks, setNewLinks] = useState<string[]>(links);
@@ -140,7 +140,7 @@ export const EventForm = ({
     setLoading(false);
   };
 
-  const formattedDate = new Date(newDate).toLocaleDateString("en-CA");
+  const formattedDate = formatDateForPicker(newDate);
 
   const otdValid =
     newOtd && newOtd.match(/on this day/i) && newOtd.length < 246;
@@ -199,6 +199,7 @@ export const EventForm = ({
             />
             <StyledTextField
               multiline
+              rows={2}
               label="Image Caption"
               placeholder="Image Caption"
               value={newImgAltText}
@@ -214,6 +215,7 @@ export const EventForm = ({
           <StyledTextField
             required
             multiline
+            rows={3}
             error={!otdValid}
             label="On this day statement (social media title)"
             placeholder="On this day..."
@@ -229,7 +231,7 @@ export const EventForm = ({
             placeholder="Description"
             value={newDescription}
             onChange={(e) => setNewDescription(e.target.value)}
-            rows={9}
+            rows={8}
           />
           <SourcesInputs
             setNewSources={setNewLinks}
