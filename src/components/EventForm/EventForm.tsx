@@ -145,7 +145,7 @@ export const EventForm = ({
   const otdValid =
     newOtd && newOtd.match(/on this day/i) && newOtd.length < 246;
   const formValid = Boolean(
-    otdValid && links[0] && newTitle && newDate && newDescription
+    otdValid && newLinks[0] && newTitle && newDate && newDescription
   );
 
   return (
